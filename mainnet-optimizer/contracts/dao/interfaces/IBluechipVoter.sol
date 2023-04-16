@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
-interface IBluechipChef {
+interface IBluechipVoter {
     function _ve() external view returns (address);
     function governor() external view returns (address);
     function gauges(address _pair) external view returns (address);

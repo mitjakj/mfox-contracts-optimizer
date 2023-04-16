@@ -90,8 +90,8 @@ contract GaugeV2 is ERC20, ReentrancyGuard, Ownable {
         address _fees_collector,
         bool _isForPair
     )  ERC20(
-        string(abi.encodePacked("vefox ", ERC20(_token).name())),
-        string(abi.encodePacked("vf", ERC20(_token).symbol()))
+        string(abi.encodePacked("shroom ", ERC20(_token).name())),
+        string(abi.encodePacked("shroom", ERC20(_token).symbol()))
     ) {
         require(_internal_bribe == address(0) || _fees_collector == address(0), "invalid fee address");
         rewardToken = IERC20(_rewardToken);     // main reward
