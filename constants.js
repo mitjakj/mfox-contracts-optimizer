@@ -10,10 +10,10 @@ module.exports = {
     /* swap */
 
     /* token */
-    token: '', 
-    proxyOFT: '', 
-    veArt: '', 
-    veToken: '', 
+    token: '0x827D4BE081b7bB2a1e3338d56F4197f31DfD6250', 
+    proxyOFT: '0x12C71AB8e05485fe44C4a146821F47319766ce5d', 
+    veArt: '0xFA3087288927d755cb8a3d3B00175Acd3EAA9871', 
+    veToken: '0xD588e41f409B0062647EaBB6cC09e35D6d93AC70', 
 
     /* dao */
     bribeFactory: '', 
