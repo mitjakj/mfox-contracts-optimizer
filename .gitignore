@@ -2,6 +2,6 @@ secret.json
 node_modules/
 artifacts/
 cache/
-.tmp_salts_*
+.tmp_salts/
 *-addresses.txt
 *.DS_Store
