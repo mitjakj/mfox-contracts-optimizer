@@ -417,6 +417,9 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
             // We also need to send tokens to ProxyOFT contract on main chain
             IERC20(base).transfer(proxyOFT, _totalClaimable);
+        } else {
+            // Return lzgas to sender
+            payable(msg.sender).transfer(msg.value);
         }
     }
 
@@ -541,10 +544,30 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         external_bribes[_gauge] = _external;
     }
 
-    function poolsList() external view returns(address[] memory, address[] memory, uint16[] memory){
+    function poolsList() 
+        external 
+        view 
+        returns(
+            address[] memory, 
+            address[] memory, 
+            uint16[] memory
+        )
+    {
+        return poolsListInRange(0, pools.length);
+    }
+
+    function poolsListInRange(uint256 _from, uint256 _to) 
+        public 
+        view 
+        returns(
+            address[] memory, 
+            address[] memory, 
+            uint16[] memory
+        )
+    {
         address[] memory gaugeList = new address[](pools.length);
         uint16[] memory chainIdList = new uint16[](pools.length);
-        for (uint i = 0; i < pools.length; i++) {
+        for (uint i = _from; i < _to; i++) {
             gaugeList[i] = gauges[pools[i]];
             chainIdList[i] = uint16(gaugeChain[gauges[pools[i]]]);
         }
