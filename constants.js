@@ -61,5 +61,9 @@ module.exports = {
     /* LZ */
     lzChainId: 110,
     lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
+
+    /* UpgradableContracts admin */
+    timelocker: '0x5d0d83EF1C1f8217cbD0D3D0802E47B8Bcd72207',
+    proxyAdmin: ''
   }
 };
