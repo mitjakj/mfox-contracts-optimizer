@@ -16,18 +16,22 @@ module.exports = {
     veToken: '0xD588e41f409B0062647EaBB6cC09e35D6d93AC70', 
 
     /* dao */
-    bribeFactory: '', 
-    gaugeFactory: '', 
-    voter: '', // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
-    bluechipVoter: '',  // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
-    bluechipFeeCollector: '', 
-    rewardDistributorToken: '', 
+    bribeFactory: '0x3f637f23CB5CA08b62379C3B8b998902CaD93Dc2', 
+    gaugeFactory: '0xf7d0dFaeA82079eF9aCd0B4E7002aCE94E6da6d8', 
+    voter: '0x001332312c37A6068a34Eb3b9D5CF927887bDdC5', // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
+    bluechipVoter: '0x763B6ebE3E571b0726C6E250845017Ec25d1453c',  // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
+    bluechipFeeCollector: '0x83F55e1E85e2a06520C8f82Ec51C3D93D28F60B1', 
+    rewardDistributorToken: '0x6701042c10c197318Cba7861b5521C5E25EBE617', 
     rewardDistributorUsdc: '', 
-    minter: '', 
+    minter: '0xda5fB473f0E31E01E977D32aCF30c2dD0cfDaA2f', 
 
     /* LZ */
     lzChainId: 102,
     lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
+
+    /* UpgradableContracts admin */
+    timelocker: '0x5d0d83EF1C1f8217cbD0D3D0802E47B8Bcd72207',
+    proxyAdmin: '0x326203DF24FFb5319bc87C7915c838F871d6C02D'
   },
 
   ARBITRUM: {
