@@ -5,10 +5,8 @@ async function main() {
     const contract = await ethers.getContractFactory("BluechipVoter");
     const BLUE_CHIP_VOTER = await upgrades.deployProxy(contract, [
         addresses.veToken, 
-        hre.ethers.constants.AddressZero, // addresses.pairFactory, 
         addresses.gaugeFactory, 
-        addresses.proxyOFT,
-        addresses.bluechipFeeCollector
+        addresses.proxyOFT
     ]);
     await BLUE_CHIP_VOTER.deployed();
 

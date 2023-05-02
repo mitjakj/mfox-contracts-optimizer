@@ -9,7 +9,6 @@ import './interfaces/IGaugeFactory.sol';
 import './interfaces/IERC20.sol';
 import './interfaces/IMinter.sol';
 import './interfaces/IPair.sol';
-import './interfaces/IPairFactory.sol';
 import './interfaces/IVoter.sol';
 import './interfaces/IVotingEscrow.sol';
 import "../lz/interfaces/ILayerZeroEndpoint.sol";
@@ -24,7 +23,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     ILayerZeroEndpoint public constant lzEndpoint = ILayerZeroEndpoint(0x3c2269811836af69497E5F486A85D7316753cf62);
 
     address public _ve; // the ve token that governs these contracts
-    address public factory; // the PairFactory
     address internal base;
     address public proxyOFT;
     address public gaugefactory;
@@ -40,19 +38,17 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     uint public totalWeight; // total voting weight
 
-    address[] public pools; // all pools viable for incentives
-    mapping(address => address) public gauges; // pool => gauge
+    address[] public gaugeList; // all gauges viable for incentives
     mapping(address => uint) public gaugeChain; // gauge => uint
     mapping(uint16 => address) public sidechainManager; // chain => gauge manager
     mapping(uint16 => address[]) public chainGauges; // chain => gauge list
     mapping(uint => mapping(address => uint)) public epochBridgeData; // epoch => gauge => claimable
     mapping(address => uint) public gaugesDistributionTimestmap;
     mapping(address => address) public poolForGauge; // gauge => pool
-    mapping(address => address) public internal_bribes; // gauge => internal bribe (only fees)
     mapping(address => address) public external_bribes; // gauge => external bribe (real bribes)
-    mapping(address => uint256) public weights; // pool => weight
-    mapping(uint => mapping(address => uint256)) public votes; // nft => pool => votes
-    mapping(uint => address[]) public poolVote; // nft => pools
+    mapping(address => uint256) public weights; // gauge => weight
+    mapping(uint => mapping(address => uint256)) public votes; // nft => gauge => votes
+    mapping(uint => address[]) public gaugeVote; // nft => gauges
     mapping(uint => uint) public usedWeights;  // nft => total voting weight of user
     mapping(uint => uint) public lastVoted; // nft => timestamp of last vote, to ensure one vote per epoch
     mapping(address => bool) public isGauge;
@@ -74,7 +70,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function initialize(
         address __ve, 
-        address _factory, 
         address  _gauges, 
         address _bribes,
         address _proxyOFT
@@ -82,7 +77,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         __Ownable_init();
         __ReentrancyGuard_init();
         _ve = __ve;
-        factory = _factory;
         base = IVotingEscrow(__ve).token();
         proxyOFT = _proxyOFT;
         gaugefactory = _gauges;
@@ -121,21 +115,20 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     function _reset(uint _tokenId) internal {
-        address[] storage _poolVote = poolVote[_tokenId];
-        uint _poolVoteCnt = _poolVote.length;
+        address[] storage _gaugeVote = gaugeVote[_tokenId];
+        uint _gaugeVoteCnt = _gaugeVote.length;
         uint256 _totalWeight = 0;
 
-        for (uint i = 0; i < _poolVoteCnt; i ++) {
-            address _pool = _poolVote[i];
-            uint256 _votes = votes[_tokenId][_pool];
+        for (uint i = 0; i < _gaugeVoteCnt; i ++) {
+            address _gauge = _gaugeVote[i];
+            uint256 _votes = votes[_tokenId][_gauge];
 
             if (_votes != 0) {
-                _updateFor(gauges[_pool]);
-                weights[_pool] -= _votes;
-                votes[_tokenId][_pool] -= _votes;
+                _updateFor(_gauge);
+                weights[_gauge] -= _votes;
+                votes[_tokenId][_gauge] -= _votes;
                 if (_votes > 0) {
-                    IBribe(internal_bribes[gauges[_pool]])._withdraw(uint256(_votes), _tokenId);
-                    IBribe(external_bribes[gauges[_pool]])._withdraw(uint256(_votes), _tokenId);
+                    IBribe(external_bribes[_gauge])._withdraw(uint256(_votes), _tokenId);
                     _totalWeight += _votes;
                 } else {
                     _totalWeight -= _votes;
@@ -145,54 +138,52 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         }
         totalWeight -= uint256(_totalWeight);
         usedWeights[_tokenId] = 0;
-        delete poolVote[_tokenId];
+        delete gaugeVote[_tokenId];
     }
 
     function poke(uint _tokenId) external nonReentrant {
         //require((block.timestamp / DURATION) * DURATION > lastVoted[_tokenId], "TOKEN_ALREADY_VOTED_THIS_EPOCH");
         require(IVotingEscrow(_ve).isApprovedOrOwner(msg.sender, _tokenId));
-        address[] memory _poolVote = poolVote[_tokenId];
-        uint _poolCnt = _poolVote.length;
-        uint256[] memory _weights = new uint256[](_poolCnt);
+        address[] memory _gaugeVote = gaugeVote[_tokenId];
+        uint _gaugeCnt = _gaugeVote.length;
+        uint256[] memory _weights = new uint256[](_gaugeCnt);
 
-        for (uint i = 0; i < _poolCnt; i ++) {
-            _weights[i] = votes[_tokenId][_poolVote[i]];
+        for (uint i = 0; i < _gaugeCnt; i ++) {
+            _weights[i] = votes[_tokenId][_gaugeVote[i]];
         }
 
-        _vote(_tokenId, _poolVote, _weights);
+        _vote(_tokenId, _gaugeVote, _weights);
     }
 
-    function _vote(uint _tokenId, address[] memory _poolVote, uint256[] memory _weights) internal {
+    function _vote(uint _tokenId, address[] memory _gaugeVote, uint256[] memory _weights) internal {
         _reset(_tokenId);
-        uint _poolCnt = _poolVote.length;
+        uint _gaugeCnt = _gaugeVote.length;
         uint256 _weight = IVotingEscrow(_ve).balanceOfNFT(_tokenId);
         uint256 _totalVoteWeight = 0;
         uint256 _totalWeight = 0;
         uint256 _usedWeight = 0;
 
-        for (uint i = 0; i < _poolCnt; i++) {
+        for (uint i = 0; i < _gaugeCnt; i++) {
             _totalVoteWeight += _weights[i];
         }
 
-        for (uint i = 0; i < _poolCnt; i++) {
-            address _pool = _poolVote[i];
-            address _gauge = gauges[_pool];
+        for (uint i = 0; i < _gaugeCnt; i++) {
+            address _gauge = _gaugeVote[i];
 
             if (isGauge[_gauge]) {
-                uint256 _poolWeight = _weights[i] * _weight / _totalVoteWeight;
-                require(votes[_tokenId][_pool] == 0);
-                require(_poolWeight != 0);
+                uint256 _gaugeWeight = _weights[i] * _weight / _totalVoteWeight;
+                require(votes[_tokenId][_gauge] == 0);
+                require(_gaugeWeight != 0);
                 _updateFor(_gauge);
 
-                poolVote[_tokenId].push(_pool);
+                gaugeVote[_tokenId].push(_gauge);
 
-                weights[_pool] += _poolWeight;
-                votes[_tokenId][_pool] += _poolWeight;
-                IBribe(internal_bribes[_gauge])._deposit(uint256(_poolWeight), _tokenId);
-                IBribe(external_bribes[_gauge])._deposit(uint256(_poolWeight), _tokenId);
-                _usedWeight += _poolWeight;
-                _totalWeight += _poolWeight;
-                emit Voted(msg.sender, _tokenId, _poolWeight);
+                weights[_gauge] += _gaugeWeight;
+                votes[_tokenId][_gauge] += _gaugeWeight;
+                IBribe(external_bribes[_gauge])._deposit(uint256(_gaugeWeight), _tokenId);
+                _usedWeight += _gaugeWeight;
+                _totalWeight += _gaugeWeight;
+                emit Voted(msg.sender, _tokenId, _gaugeWeight);
             }
         }
         if (_usedWeight > 0) IVotingEscrow(_ve).voting(_tokenId);
@@ -201,48 +192,42 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
 
-    function vote(uint _tokenId, address[] calldata _poolVote, uint256[] calldata _weights) external nonReentrant {
+    function vote(uint _tokenId, address[] calldata _gaugeVote, uint256[] calldata _weights) external nonReentrant {
         //require((block.timestamp / DURATION) * DURATION > lastVoted[_tokenId], "TOKEN_ALREADY_VOTED_THIS_EPOCH");
         require(IVotingEscrow(_ve).isApprovedOrOwner(msg.sender, _tokenId));
-        require(_poolVote.length == _weights.length);
+        require(_gaugeVote.length == _weights.length);
         lastVoted[_tokenId] = block.timestamp;
-        _vote(_tokenId, _poolVote, _weights);
+        _vote(_tokenId, _gaugeVote, _weights);
     }
 
-    function createGauge(address _pool, uint16 chainId) external returns (address) {
+    function createGauge(address _pool, uint16 chainId, bool isLP) external returns (address) {
         require(msg.sender == governor, "Only governor");
+        require(
+            (_pool != address(0) && chainId == 0) ||  // main-chain gauge
+            (_pool == address(0) && chainId > 0),     // side-chain gauge
+            "createGauge: invalid pool address"
+        );
+
+        address tokenA;
+        address tokenB;
+
+        if (isLP && chainId == 0) {
+            tokenA = IPair(_pool).token0();
+            tokenB = IPair(_pool).token1();
+        } else {
+            tokenA = _pool;
+            tokenB = base;
+        }
 
         if(chainId > 0) {
             // create dummy token -- only placeholder
             _pool = address(new SidechainPool());
         }
 
-        require(gauges[_pool] == address(0x0), "exists");
-        address[] memory allowedRewards = new address[](3);
-        address[] memory internalRewards = new address[](2);
-        bool isPair = factory != address(0) && IPairFactory(factory).isPair(_pool);
-        address tokenA;
-        address tokenB;
-
-        if (isPair) {
-            (tokenA, tokenB) = IPair(_pool).tokens();
-            allowedRewards[0] = tokenA;
-            allowedRewards[1] = tokenB;
-            internalRewards[0] = tokenA;
-            internalRewards[1] = tokenB;
-
-            if (base != tokenA && base != tokenB) {
-              allowedRewards[2] = base;
-            }
-        }
-
-        string memory _type =  string.concat("MF LP Fees: ", IERC20(_pool).symbol() );
-        address _internal_bribe = IBribeFactory(bribefactory).createBribe(owner(), tokenA, tokenB, _type);
-
-        _type = string.concat("MF Bribes: ", IERC20(_pool).symbol() );
+        string memory _type = string.concat("MF Bribes: ", IERC20(_pool).symbol() );
         address _external_bribe = IBribeFactory(bribefactory).createBribe(owner(), tokenA, tokenB, _type);
 
-        address _gauge = IGaugeFactory(gaugefactory).createGaugeV2(base, _ve, _pool, address(this), _internal_bribe, _external_bribe, address(0), isPair);
+        address _gauge = IGaugeFactory(gaugefactory).createGaugeV2(base, _ve, _pool, address(this), address(0), _external_bribe, address(0), false);
         
         if(chainId > 0) {
             gaugeChain[_gauge] = chainId;
@@ -250,15 +235,13 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         }
 
         IERC20(base).approve(_gauge, type(uint).max);
-        internal_bribes[_gauge] = _internal_bribe;
         external_bribes[_gauge] = _external_bribe;
-        gauges[_pool] = _gauge;
         poolForGauge[_gauge] = _pool;
         isGauge[_gauge] = true;
         isAlive[_gauge] = true;
         _updateFor(_gauge);
-        pools.push(_pool);
-        emit GaugeCreated(_gauge, msg.sender, _internal_bribe, _external_bribe, _pool);
+        gaugeList.push(_gauge);
+        emit GaugeCreated(_gauge, msg.sender, address(0), _external_bribe, _pool);
         return _gauge;
     }
 
@@ -302,11 +285,11 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     function length() external view returns (uint) {
-        return pools.length;
+        return gaugeList.length;
     }
 
-    function poolVoteLength(uint tokenId) external view returns(uint) { 
-        return poolVote[tokenId].length;
+    function gaugeVoteLength(uint tokenId) external view returns(uint) { 
+        return gaugeVote[tokenId].length;
     }
 
 
@@ -327,12 +310,12 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function updateForRange(uint start, uint end) public {
         for (uint i = start; i < end; i++) {
-            _updateFor(gauges[pools[i]]);
+            _updateFor(gaugeList[i]);
         }
     }
 
     function updateAll() external {
-        updateForRange(0, pools.length);
+        updateForRange(0, gaugeList.length);
     }
 
     function updateGauge(address _gauge) external {
@@ -340,8 +323,7 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     function _updateFor(address _gauge) internal {
-        address _pool = poolForGauge[_gauge];
-        uint256 _supplied = weights[_pool];
+        uint256 _supplied = weights[_gauge];
         if (_supplied > 0) {
             uint _supplyIndex = supplyIndex[_gauge];
             uint _index = index; // get global index0 for accumulated distro
@@ -391,7 +373,7 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         distributeSidechain(chainId, period, dstGasLimit, 0, chainGauges[chainId].length);
     }
 
-    function distributeSidechain(uint16 chainId, uint256 period, uint256 dstGasLimit, uint256 from, uint256 to) public payable {
+    function distributeSidechain(uint16 chainId, uint256 period, uint256 dstGasLimit, uint256 from, uint256 to) public payable nonReentrant {
         require(chainId > 0, "invalid chainId");
         address _gauge;
         uint256 _totalClaimable;
@@ -419,7 +401,8 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
             IERC20(base).transfer(proxyOFT, _totalClaimable);
         } else {
             // Return lzgas to sender
-            payable(msg.sender).transfer(msg.value);
+            (bool success, ) = msg.sender.call{value: msg.value}("");
+            require(success, "msg.sender rejected transfer");
         }
     }
 
@@ -445,12 +428,12 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     function distributeAll() external {
-        distribute(0, pools.length);
+        distribute(0, gaugeList.length);
     }
 
     function distribute(uint start, uint finish) public {
         for (uint x = start; x < finish; x++) {
-            distribute(gauges[pools[x]]);
+            distribute(gaugeList[x]);
         }
     }
 
@@ -477,11 +460,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         gaugefactory = _gaugeFactory;
     }
 
-    function setPairFactory(address _factory) external {
-        require(msg.sender == emergencyCouncil);
-        factory = _factory;
-    }
-
     function setSidechainManager(uint16 _chainId, address _manager) external {
         require(msg.sender == governor, "Only governor");
         sidechainManager[_chainId] = _manager;
@@ -492,42 +470,11 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         require(isAlive[_gauge], "gauge already dead");
         isAlive[_gauge] = false;
         claimable[_gauge] = 0;
-        address _pool = poolForGauge[_gauge];
-        internal_bribes[_gauge] = address(0);
         external_bribes[_gauge] = address(0);
-        gauges[_pool] = address(0);
         poolForGauge[_gauge] = address(0);
         isGauge[_gauge] = false;
         isAlive[_gauge] = false;
-        claimable[_gauge] = 0;
         emit GaugeKilled(_gauge);
-    }
-
-    function initGauges(address[] memory _gauges, address[] memory _pools) public {
-        require(msg.sender == emergencyCouncil);
-        uint256 i = 0;
-        for(i; i < _pools.length; i++){
-            address _pool = _pools[i];
-            address _gauge = _gauges[i];
-            address tokenA;
-            address tokenB;
-            (tokenA, tokenB) = IPair(_pool).tokens();
-
-            string memory _type =  string.concat("MF LP Fees: ", IERC20(_pool).symbol() );
-            address _internal_bribe = IBribeFactory(bribefactory).createBribe(owner(), tokenA, tokenB, _type);
-            _type = string.concat("MF Bribes: ", IERC20(_pool).symbol() );
-            address _external_bribe = IBribeFactory(bribefactory).createBribe(owner(), tokenA, tokenB, _type);
-            IERC20(base).approve(_gauge, type(uint).max);
-            internal_bribes[_gauge] = _internal_bribe;
-            external_bribes[_gauge] = _external_bribe;
-            gauges[_pool] = _gauge;
-            poolForGauge[_gauge] = _pool;
-            isGauge[_gauge] = true;
-            isAlive[_gauge] = true;
-            _updateFor(_gauge);
-            pools.push(_pool);
-            emit GaugeCreated(_gauge, msg.sender, _internal_bribe, _external_bribe, _pool);
-        }
     }
 
     function increaseGaugeApprovals(address _gauge) external {
@@ -537,42 +484,21 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         IERC20(base).approve(_gauge, type(uint).max);
     }
 
-    function setNewBribe(address _gauge, address _internal, address _external) external {
+    function setNewBribe(address _gauge, address _external) external {
         require(msg.sender == emergencyCouncil);
         require(isGauge[_gauge] = true);
-        internal_bribes[_gauge] = _internal;
         external_bribes[_gauge] = _external;
     }
 
-    function poolsList() 
-        external 
-        view 
-        returns(
-            address[] memory, 
-            address[] memory, 
-            uint16[] memory
-        )
-    {
-        return poolsListInRange(0, pools.length);
-    }
-
-    function poolsListInRange(uint256 _from, uint256 _to) 
-        public 
-        view 
-        returns(
-            address[] memory, 
-            address[] memory, 
-            uint16[] memory
-        )
-    {
-        address[] memory gaugeList = new address[](pools.length);
-        uint16[] memory chainIdList = new uint16[](pools.length);
-        for (uint i = _from; i < _to; i++) {
-            gaugeList[i] = gauges[pools[i]];
-            chainIdList[i] = uint16(gaugeChain[gauges[pools[i]]]);
+    function gaugeListExtended() external view returns(address[] memory, address[] memory, uint16[] memory){
+        address[] memory poolList = new address[](gaugeList.length);
+        uint16[] memory chainIdList = new uint16[](gaugeList.length);
+        for (uint i = 0; i < gaugeList.length; i++) {
+            poolList[i] = poolForGauge[gaugeList[i]];
+            chainIdList[i] = uint16(gaugeChain[gaugeList[i]]);
         }
 
-        return (pools, gaugeList, chainIdList);
+        return (gaugeList, poolList, chainIdList);
     }
 
     function chainGaugesList(uint16 _chainId) external view returns(address[] memory){

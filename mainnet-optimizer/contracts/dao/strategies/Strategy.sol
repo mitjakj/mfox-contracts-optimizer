@@ -8,8 +8,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
-import "./interfaces/IXswapFarm.sol";
-import "./interfaces/IXRouter01.sol";
+import "./../interfaces/IXswapFarm.sol";
+import "./../interfaces/IXRouter01.sol";
 
 interface IWFTM is IERC20 {
     function deposit() external payable;
@@ -35,7 +35,6 @@ abstract contract Strategy is Ownable, Pausable {
 
     address public wftmAddress;
     address public vault;
-    address public NATIVEAddress;
     address public govAddress; // timelock contract
 
     uint256 public lastEarnBlock = 0;
@@ -44,11 +43,6 @@ abstract contract Strategy is Ownable, Pausable {
     uint256 public constant controllerFeeMax = 10000; // 100 = 1%
     uint256 public constant controllerFeeUL = 300;
 
-    uint256 public buyBackRate = 200;
-    uint256 public constant buyBackRateMax = 10000; // 100 = 1%
-    uint256 public constant buyBackRateUL = 800;
-    address public constant buyBackAddress = 0x000000000000000000000000000000000000dEaD;
-
     uint256 public withdrawFeeFactor;
     uint256 public constant withdrawFeeFactorMax = 10000;
     uint256 public constant withdrawFeeFactorLL = 9950;
@@ -56,13 +50,10 @@ abstract contract Strategy is Ownable, Pausable {
     uint256 public slippageFactor = 950; // 5% default slippage tolerance
     uint256 public constant slippageFactorUL = 995;
 
-    address[] public earnedToNATIVEPath;
     address[] public earnedToToken0Path;
     address[] public earnedToToken1Path;
     address[] public token0ToEarnedPath;
     address[] public token1ToEarnedPath;
-    address[] public earnedToWFTMPath;
-    address[] public WFTMToNATIVEPath;
 
     modifier onlyAllowGov() {
         require(msg.sender == govAddress, "Not authorised");
@@ -154,7 +145,6 @@ abstract contract Strategy is Ownable, Pausable {
         uint256 earnedAmt = IERC20(earnedAddress).balanceOf(address(this));
 
         earnedAmt = distributeFees(earnedAmt);
-        earnedAmt = buyBack(earnedAmt);
 
         if (isSingleVault) {
             if (earnedAddress != wantAddress) {
@@ -236,69 +226,6 @@ abstract contract Strategy is Ownable, Pausable {
         _farm();
     }
 
-    function buyBack(uint256 _earnedAmt) internal virtual returns (uint256) {
-        if (buyBackRate <= 0) {
-            return _earnedAmt;
-        }
-
-        uint256 buyBackAmt = _earnedAmt * buyBackRate / buyBackRateMax;
-
-        if (uniRouterAddress != buybackRouterAddress) {
-            // Example case: LP token on ApeSwap and NATIVE token on PancakeSwap
-
-            if (earnedAddress != wftmAddress) {
-                // First convert earn to wftm
-                IERC20(earnedAddress).safeIncreaseAllowance(
-                    uniRouterAddress,
-                    buyBackAmt
-                );
-
-                IXRouter01(uniRouterAddress)
-                    .swapExactTokensForTokens(
-                    buyBackAmt,
-                    0,
-                    earnedToWFTMPath,
-                    address(this),
-                    block.timestamp + routerDeadlineDuration
-                );
-            }
-
-            // convert all wftm to Native and burn them
-            uint256 wftmAmt = IERC20(wftmAddress).balanceOf(address(this));
-            if (wftmAmt > 0) {
-                IERC20(wftmAddress).safeIncreaseAllowance(
-                    buybackRouterAddress,
-                    wftmAmt
-                );
-
-                IXRouter01(buybackRouterAddress)
-                    .swapExactTokensForTokens(
-                    wftmAmt,
-                    0,
-                    WFTMToNATIVEPath,
-                    buyBackAddress,
-                    block.timestamp + routerDeadlineDuration
-                );
-            }
-        } else {
-            IERC20(earnedAddress).safeIncreaseAllowance(
-                uniRouterAddress,
-                buyBackAmt
-            );
-
-            _safeSwap(
-                uniRouterAddress,
-                buyBackAmt,
-                slippageFactor,
-                earnedToNATIVEPath,
-                buyBackAddress,
-                block.timestamp + routerDeadlineDuration
-            );
-        }
-
-        return _earnedAmt - buyBackAmt;
-    }
-
     function distributeFees(uint256 _earnedAmt) internal virtual returns (uint256) {
         if (_earnedAmt > 0) {
             // Performance fee
@@ -378,15 +305,6 @@ abstract contract Strategy is Ownable, Pausable {
         require(_withdrawFeeFactor > withdrawFeeFactorLL, "!safe - too low");
         require(_withdrawFeeFactor <= withdrawFeeFactorMax, "!safe - too high");
         withdrawFeeFactor = _withdrawFeeFactor;
-    }
-
-    function setbuyBackRate(uint256 _buyBackRate) public onlyAllowGov {
-        require(buyBackRate <= buyBackRateUL, "too high");
-        buyBackRate = _buyBackRate;
-    }
-
-    function setBuybackRouterAddress(address _buybackRouterAddress) public onlyAllowGov {
-        buybackRouterAddress = _buybackRouterAddress;
     }
 
     function inCaseTokensGetStuck(

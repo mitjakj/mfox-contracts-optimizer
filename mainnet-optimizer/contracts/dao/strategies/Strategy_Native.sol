@@ -12,7 +12,6 @@ contract Strategy_Native is Strategy {
         address[] memory _tokenAddresses,
         bool _isSingleVault,
         uint256 _pid,
-        address[] memory _earnedToNATIVEPath,
         address[] memory _earnedToToken0Path,
         address[] memory _earnedToToken1Path,
         address[] memory _token0ToEarnedPath,
@@ -24,9 +23,7 @@ contract Strategy_Native is Strategy {
         farmContractAddress = _addresses[1];
         govAddress = _addresses[2];
         uniRouterAddress = _addresses[3];
-        buybackRouterAddress = _addresses[4];
 
-        NATIVEAddress = _tokenAddresses[0];
         wftmAddress = _tokenAddresses[1];
         wantAddress = _tokenAddresses[2];
         earnedAddress = _tokenAddresses[3];
@@ -38,7 +35,6 @@ contract Strategy_Native is Strategy {
         isSingleVault = _isSingleVault;
         isAutoComp = false;
 
-        earnedToNATIVEPath = _earnedToNATIVEPath;
         earnedToToken0Path = _earnedToToken0Path;
         earnedToToken1Path = _earnedToToken1Path;
         token0ToEarnedPath = _token0ToEarnedPath;
@@ -56,8 +52,6 @@ contract Strategy_Native is Strategy {
     function _harvest() internal override {}
     // not used
     function earn() public override {}
-    // not used
-    function buyBack(uint256 _earnedAmt) internal override returns (uint256) {}
     // not used
     function distributeFees(uint256 _earnedAmt) internal override returns (uint256) {}
     // not used
