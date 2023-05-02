@@ -30,7 +30,6 @@ contract BluechipVoter is IBluechipVoter, OwnableUpgradeable, ReentrancyGuardUpg
     address public minter;
     address public governor; // should be set to an IGovernor
     address public emergencyCouncil; // credibly neutral party similar to Curve's Emergency DAO
-    address public fees_collector;
     uint internal constant VOTER_TOKEN_ID = 1;
 
     uint internal index;
@@ -70,22 +69,18 @@ contract BluechipVoter is IBluechipVoter, OwnableUpgradeable, ReentrancyGuardUpg
 
     function initialize(
         address __ve, 
-        address _factory, 
         address  _gauges,
-        address _proxyOFT,
-        address _fees_collector
+        address _proxyOFT
     ) initializer public {
         __Ownable_init();
         __ReentrancyGuard_init();
         _ve = __ve;
-        factory = _factory;
         base = IVotingEscrow(__ve).token();
         proxyOFT = _proxyOFT;
         gaugefactory = _gauges;
         minter = msg.sender;
         governor = msg.sender;
         emergencyCouncil = msg.sender;
-        fees_collector = _fees_collector;
     }     
 
     function _initialize(address _minter) external {
@@ -201,21 +196,18 @@ contract BluechipVoter is IBluechipVoter, OwnableUpgradeable, ReentrancyGuardUpg
 
     function createGauge(address _pool, uint16 chainId) external returns (address) {
         require(msg.sender == governor, "Only governor");
+        require(
+            (_pool != address(0) && chainId == 0) ||  // main-chain gauge
+            (_pool == address(0) && chainId > 0),     // side-chain gauge
+            "createGauge: invalid pool address"
+        );
 
         if(chainId > 0) {
             // create dummy token -- only placeholder
             _pool = address(new SidechainPool());
         }
 
-        bool isPair = factory != address(0) && IPairFactory(factory).isPair(_pool);
-        address tokenA;
-        address tokenB;
-
-        if (isPair) {
-            (tokenA, tokenB) = IPair(_pool).tokens();
-        }
-
-        address _gauge = IGaugeFactory(gaugefactory).createGaugeV2(base, _ve, _pool, address(this), address(0), address(0), fees_collector, isPair);
+        address _gauge = IGaugeFactory(gaugefactory).createGaugeV2(base, _ve, _pool, address(this), address(0), address(0), address(0), false);
 
         if(chainId > 0) {
             gaugeChain[_gauge] = chainId;
@@ -229,7 +221,7 @@ contract BluechipVoter is IBluechipVoter, OwnableUpgradeable, ReentrancyGuardUpg
         isAlive[_gauge] = true;
         _updateFor(_gauge);
         gaugeList.push(_gauge);
-        emit GaugeCreated(_gauge, msg.sender, fees_collector, _pool);
+        emit GaugeCreated(_gauge, msg.sender, address(0), _pool);
         return _gauge;
     }
 
@@ -454,11 +446,6 @@ contract BluechipVoter is IBluechipVoter, OwnableUpgradeable, ReentrancyGuardUpg
         require(isGauge[_gauge] = true);
         IERC20(base).approve(_gauge, 0);
         IERC20(base).approve(_gauge, type(uint).max);
-    }
-
-    function setFeesCollector(address _fees_collector) external {
-        require(msg.sender == emergencyCouncil);
-        fees_collector = _fees_collector; 
     }
 
     function gaugeListExtended() external view returns(address[] memory, address[] memory, uint16[] memory){

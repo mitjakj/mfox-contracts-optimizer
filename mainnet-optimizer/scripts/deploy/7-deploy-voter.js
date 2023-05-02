@@ -5,7 +5,6 @@ async function main() {
     const VOTERContract = await ethers.getContractFactory("VoterV2_1");
     const VOTER = await upgrades.deployProxy(VOTERContract, [
         addresses.veToken, 
-        hre.ethers.constants.AddressZero, // addresses.pairFactory, 
         addresses.gaugeFactory, 
         addresses.bribeFactory, 
         addresses.proxyOFT

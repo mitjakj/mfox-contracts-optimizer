@@ -130,8 +130,8 @@ contract VotingEscrow is IERC721, IERC721Metadata, IVotes, ILayerZeroReceiver {
                              METADATA STORAGE
     //////////////////////////////////////////////////////////////*/
 
-    string constant public name = "veKAT";
-    string constant public symbol = "veKAT";
+    string constant public name = "veShroom";
+    string constant public symbol = "veSHROOM";
     string constant public version = "1.0.0";
     uint8 constant public decimals = 18;
 

@@ -9,7 +9,6 @@ import './interfaces/IGaugeFactory.sol';
 import './interfaces/IERC20.sol';
 import './interfaces/IMinter.sol';
 import './interfaces/IPair.sol';
-import './interfaces/IPairFactory.sol';
 import './interfaces/IVoter.sol';
 import './interfaces/IVotingEscrow.sol';
 import "../lz/interfaces/ILayerZeroEndpoint.sol";
@@ -24,7 +23,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     ILayerZeroEndpoint public constant lzEndpoint = ILayerZeroEndpoint(0x3c2269811836af69497E5F486A85D7316753cf62);
 
     address public _ve; // the ve token that governs these contracts
-    address public factory; // the PairFactory
     address internal base;
     address public proxyOFT;
     address public gaugefactory;
@@ -47,7 +45,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     mapping(uint => mapping(address => uint)) public epochBridgeData; // epoch => gauge => claimable
     mapping(address => uint) public gaugesDistributionTimestmap;
     mapping(address => address) public poolForGauge; // gauge => pool
-    mapping(address => address) public internal_bribes; // gauge => internal bribe (only fees)
     mapping(address => address) public external_bribes; // gauge => external bribe (real bribes)
     mapping(address => uint256) public weights; // gauge => weight
     mapping(uint => mapping(address => uint256)) public votes; // nft => gauge => votes
@@ -73,7 +70,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function initialize(
         address __ve, 
-        address _factory, 
         address  _gauges, 
         address _bribes,
         address _proxyOFT
@@ -81,7 +77,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         __Ownable_init();
         __ReentrancyGuard_init();
         _ve = __ve;
-        factory = _factory;
         base = IVotingEscrow(__ve).token();
         proxyOFT = _proxyOFT;
         gaugefactory = _gauges;
@@ -133,7 +128,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 weights[_gauge] -= _votes;
                 votes[_tokenId][_gauge] -= _votes;
                 if (_votes > 0) {
-                    IBribe(internal_bribes[_gauge])._withdraw(uint256(_votes), _tokenId);
                     IBribe(external_bribes[_gauge])._withdraw(uint256(_votes), _tokenId);
                     _totalWeight += _votes;
                 } else {
@@ -186,7 +180,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
                 weights[_gauge] += _gaugeWeight;
                 votes[_tokenId][_gauge] += _gaugeWeight;
-                IBribe(internal_bribes[_gauge])._deposit(uint256(_gaugeWeight), _tokenId);
                 IBribe(external_bribes[_gauge])._deposit(uint256(_gaugeWeight), _tokenId);
                 _usedWeight += _gaugeWeight;
                 _totalWeight += _gaugeWeight;
@@ -207,39 +200,34 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         _vote(_tokenId, _gaugeVote, _weights);
     }
 
-    function createGauge(address _pool, uint16 chainId) external returns (address) {
+    function createGauge(address _pool, uint16 chainId, bool isLP) external returns (address) {
         require(msg.sender == governor, "Only governor");
+        require(
+            (_pool != address(0) && chainId == 0) ||  // main-chain gauge
+            (_pool == address(0) && chainId > 0),     // side-chain gauge
+            "createGauge: invalid pool address"
+        );
+
+        address tokenA;
+        address tokenB;
+
+        if (isLP && chainId == 0) {
+            tokenA = IPair(_pool).token0();
+            tokenB = IPair(_pool).token1();
+        } else {
+            tokenA = _pool;
+            tokenB = base;
+        }
 
         if(chainId > 0) {
             // create dummy token -- only placeholder
             _pool = address(new SidechainPool());
         }
 
-        address[] memory allowedRewards = new address[](3);
-        address[] memory internalRewards = new address[](2);
-        bool isPair = factory != address(0) && IPairFactory(factory).isPair(_pool);
-        address tokenA;
-        address tokenB;
-
-        if (isPair) {
-            (tokenA, tokenB) = IPair(_pool).tokens();
-            allowedRewards[0] = tokenA;
-            allowedRewards[1] = tokenB;
-            internalRewards[0] = tokenA;
-            internalRewards[1] = tokenB;
-
-            if (base != tokenA && base != tokenB) {
-              allowedRewards[2] = base;
-            }
-        }
-
-        string memory _type =  string.concat("MF LP Fees: ", IERC20(_pool).symbol() );
-        address _internal_bribe = IBribeFactory(bribefactory).createBribe(owner(), tokenA, tokenB, _type);
-
-        _type = string.concat("MF Bribes: ", IERC20(_pool).symbol() );
+        string memory _type = string.concat("MF Bribes: ", IERC20(_pool).symbol() );
         address _external_bribe = IBribeFactory(bribefactory).createBribe(owner(), tokenA, tokenB, _type);
 
-        address _gauge = IGaugeFactory(gaugefactory).createGaugeV2(base, _ve, _pool, address(this), _internal_bribe, _external_bribe, address(0), isPair);
+        address _gauge = IGaugeFactory(gaugefactory).createGaugeV2(base, _ve, _pool, address(this), address(0), _external_bribe, address(0), false);
         
         if(chainId > 0) {
             gaugeChain[_gauge] = chainId;
@@ -247,14 +235,13 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         }
 
         IERC20(base).approve(_gauge, type(uint).max);
-        internal_bribes[_gauge] = _internal_bribe;
         external_bribes[_gauge] = _external_bribe;
         poolForGauge[_gauge] = _pool;
         isGauge[_gauge] = true;
         isAlive[_gauge] = true;
         _updateFor(_gauge);
         gaugeList.push(_gauge);
-        emit GaugeCreated(_gauge, msg.sender, _internal_bribe, _external_bribe, _pool);
+        emit GaugeCreated(_gauge, msg.sender, address(0), _external_bribe, _pool);
         return _gauge;
     }
 
@@ -473,11 +460,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         gaugefactory = _gaugeFactory;
     }
 
-    function setPairFactory(address _factory) external {
-        require(msg.sender == emergencyCouncil);
-        factory = _factory;
-    }
-
     function setSidechainManager(uint16 _chainId, address _manager) external {
         require(msg.sender == governor, "Only governor");
         sidechainManager[_chainId] = _manager;
@@ -488,7 +470,6 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         require(isAlive[_gauge], "gauge already dead");
         isAlive[_gauge] = false;
         claimable[_gauge] = 0;
-        internal_bribes[_gauge] = address(0);
         external_bribes[_gauge] = address(0);
         poolForGauge[_gauge] = address(0);
         isGauge[_gauge] = false;
@@ -503,10 +484,9 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         IERC20(base).approve(_gauge, type(uint).max);
     }
 
-    function setNewBribe(address _gauge, address _internal, address _external) external {
+    function setNewBribe(address _gauge, address _external) external {
         require(msg.sender == emergencyCouncil);
         require(isGauge[_gauge] = true);
-        internal_bribes[_gauge] = _internal;
         external_bribes[_gauge] = _external;
     }
 

@@ -24,7 +24,7 @@ contract BribeFactoryV2 is OwnableUpgradeable {
         if (_token0 != address(0)) {
            lastBribe.addReward(_token0); 
         }
-        if (_token0 != _token1) {
+        if (_token1 != address(0) && _token0 != _token1) {
             lastBribe.addReward(_token1);
         }
         last_bribe = address(lastBribe);

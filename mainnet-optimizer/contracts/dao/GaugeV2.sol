@@ -184,7 +184,7 @@ contract GaugeV2 is ERC20, ReentrancyGuard, Ownable {
 
     ///@notice deposit internal
     function _deposit(uint256 _amount, address account, uint256 tokenId) internal nonReentrant updateReward(account) {
-        if (amount == 0) {
+        if (_amount == 0) {
             // Allow boost with veNFT without depositing extra amount
             require(
                 derivedBalances[account] > 0 && tokenId > 0, 
