@@ -41,7 +41,12 @@ abstract contract Strategy is Ownable, Pausable {
 
     uint256 public controllerFee = 200;
     uint256 public constant controllerFeeMax = 10000; // 100 = 1%
-    uint256 public constant controllerFeeUL = 300;
+    uint256 public constant controllerFeeUL = 2500; // 25%
+
+    uint256 public partnerFee;
+    address public partnerFeeAddress;
+    uint256 public voterFee = 2500; // 25% of controllerFee
+    address public voterFeeAddress;
 
     uint256 public withdrawFeeFactor;
     uint256 public constant withdrawFeeFactorMax = 10000;
@@ -232,7 +237,34 @@ abstract contract Strategy is Ownable, Pausable {
             // Performance fee
             if (controllerFee > 0) {
                 uint256 fee = _earnedAmt * controllerFee / controllerFeeMax;
-                IERC20(earnedAddress).safeTransfer(govAddress, fee);
+                uint256 controllerAmt = fee;
+                uint256 voterAmt;
+                uint256 partnerAmt;
+
+                if (voterFee > 0) {
+                    voterAmt = fee * voterFee / 10_000;
+                    // handle possible rounding error
+                    if (voterAmt > controllerAmt) {
+                        voterAmt = controllerAmt;
+                    }
+                    controllerAmt -= voterAmt;
+                    IERC20(earnedAddress).safeTransfer(voterFeeAddress, voterAmt); 
+                }
+
+                if (partnerFee > 0) {
+                    partnerAmt = fee * partnerFee / 10_000;
+                    // handle possible rounding error
+                    if (partnerAmt > controllerAmt) {
+                        partnerAmt = controllerAmt;
+                    }
+                    controllerAmt -= partnerAmt;
+                    IERC20(earnedAddress).safeTransfer(partnerFeeAddress, partnerAmt); 
+                }
+
+                if (controllerAmt > 0) { 
+                    IERC20(earnedAddress).safeTransfer(govAddress, controllerAmt); 
+                }
+
                 _earnedAmt = _earnedAmt - fee;
             }
         }
@@ -296,6 +328,20 @@ abstract contract Strategy is Ownable, Pausable {
     function setControllerFee(uint256 _controllerFee) public onlyAllowGov{
         require(_controllerFee <= controllerFeeUL, "too high");
         controllerFee = _controllerFee;
+    }
+
+    function setVoterFee(uint256 _voterFee, address _voterFeeAddress) public onlyAllowGov{
+        require(_voterFee + partnerFee <= 10_000, "too high");
+        require(_voterFeeAddress != address(0), "Zero address not allowed");
+        voterFee = _voterFee;
+        voterFeeAddress = _voterFeeAddress;
+    }
+
+    function setPartnerFee(uint256 _partnerFee, address _partnerFeeAddress) public onlyAllowGov{
+        require(_partnerFee + voterFee <= 10_000, "too high");
+        require(_partnerFeeAddress != address(0), "Zero address not allowed");
+        partnerFee = _partnerFee;
+        partnerFeeAddress = _partnerFeeAddress;
     }
 
     function setGov(address _govAddress) public virtual onlyAllowGov {
