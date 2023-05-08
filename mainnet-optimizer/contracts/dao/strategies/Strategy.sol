@@ -70,7 +70,8 @@ abstract contract Strategy is Ownable, Pausable {
 
     function balanceOfStakedWant() public view returns (uint256) {
         if (farmContractAddress != address(0)) {
-            return IXswapFarm(farmContractAddress).userInfo(pid, address(this));
+            (uint256 _amount,) = IXswapFarm(farmContractAddress).userInfo(pid, address(this));
+            return _amount;
         } else {
             return 0;
         }

@@ -1,8 +1,9 @@
 const hre = require("hardhat");
-const path = require('path');
-const scriptName = path.basename(__filename);
 const addresses = hre.network.config.constants;
-const constants = require("../../../../constants.js");
+const constants = require("../../../../../constants.js");
+
+const pathSplit = __filename.split('/');
+const scriptName = pathSplit[pathSplit.length - 2]
 
 async function main() {
     
@@ -27,7 +28,7 @@ async function main() {
         return;
     }
 
-    tx = await VOTER.createGauge(POOL_LP, CHAIN_ID);
+    tx = await VOTER.createGauge(POOL_LP, CHAIN_ID, false);
     await tx.wait();
     console.log("gauge created");
     const gauge = await VOTER.gaugeList(PID);

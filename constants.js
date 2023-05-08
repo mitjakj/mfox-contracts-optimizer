@@ -29,8 +29,8 @@ module.exports = {
     lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
 
     /* UpgradableContracts admin */
-    timelocker: '',
-    proxyAdmin: '',
+    timelocker: '0x5d0d83EF1C1f8217cbD0D3D0802E47B8Bcd72207',
+    proxyAdmin: '0x326203DF24FFb5319bc87C7915c838F871d6C02D',
 
     /* LPs */
     biswapLP_busd_wbnb: '0xaCAac9311b0096E04Dfe96b6D87dec867d3883Dc',
