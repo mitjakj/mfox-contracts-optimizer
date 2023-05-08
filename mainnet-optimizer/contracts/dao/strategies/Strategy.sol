@@ -243,6 +243,10 @@ abstract contract Strategy is Ownable, Pausable {
 
                 if (voterFee > 0) {
                     voterAmt = fee * voterFee / 10_000;
+                    // handle possible rounding error
+                    if (voterAmt > controllerAmt) {
+                        voterAmt = controllerAmt;
+                    }
                     controllerAmt -= voterAmt;
                     IERC20(earnedAddress).safeTransfer(voterFeeAddress, voterAmt); 
                 }
