@@ -470,7 +470,7 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         require(isAlive[_gauge], "gauge already dead");
         isAlive[_gauge] = false;
         claimable[_gauge] = 0;
-        external_bribes[_gauge] = address(0);
+        // external_bribes[_gauge] = address(0); -- removed this to prevent NFT stuck in killed gauge
         poolForGauge[_gauge] = address(0);
         isGauge[_gauge] = false;
         isAlive[_gauge] = false;
@@ -503,6 +503,43 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function chainGaugesList(uint16 _chainId) external view returns(address[] memory){
         return chainGauges[_chainId];
+    }
+
+    struct BribeData {
+        address[] rewardTokens;
+        uint256[] earned;
+    }
+
+    function bribeDataExtended(address[] memory _bribeList, uint256 tokenId)
+        external 
+        view 
+        returns(BribeData[] memory)
+    {
+        BribeData[] memory bribeList = new BribeData[](_bribeList.length);
+
+        address _bribe;
+        uint256 _rewardListLen;
+        for (uint256 i = 0; i < _bribeList.length; i++) {
+            _bribe = _bribeList[i];
+            _rewardListLen = IBribe(_bribe).rewardsListLength();
+
+            address[] memory _rewardTokens = new address[](_rewardListLen);
+            uint256[] memory _earned = new uint256[](_rewardListLen);
+
+            for (uint256 j = 0; j < _rewardListLen; j++) {
+                _rewardTokens[j] = IBribe(_bribe).rewardTokens(j);
+                if (tokenId > 0) {
+                    _earned[j] = IBribe(_bribe).earned(tokenId, _rewardTokens[j]);
+                }
+            }
+
+            bribeList[i] = BribeData({
+                rewardTokens: _rewardTokens,
+                earned: _earned
+            });
+        }
+
+        return bribeList;
     }
     
 }

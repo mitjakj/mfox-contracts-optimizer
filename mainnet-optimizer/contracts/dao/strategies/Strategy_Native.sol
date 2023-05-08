@@ -11,35 +11,15 @@ contract Strategy_Native is Strategy {
         address[] memory _addresses,
         address[] memory _tokenAddresses,
         bool _isSingleVault,
-        uint256 _pid,
-        address[] memory _earnedToToken0Path,
-        address[] memory _earnedToToken1Path,
-        address[] memory _token0ToEarnedPath,
-        address[] memory _token1ToEarnedPath,
-        address[] memory _earned0ToEarnedPath,
         uint256 _withdrawFeeFactor
     ) public {
         vault = _addresses[0];
-        farmContractAddress = _addresses[1];
-        govAddress = _addresses[2];
-        uniRouterAddress = _addresses[3];
+        govAddress = _addresses[1];
 
-        wftmAddress = _tokenAddresses[1];
-        wantAddress = _tokenAddresses[2];
-        earnedAddress = _tokenAddresses[3];
-        earned0Address = _tokenAddresses[4];
-        token0Address = _tokenAddresses[5];
-        token1Address = _tokenAddresses[6];
+        wantAddress = _tokenAddresses[0];
 
-        pid = _pid;
         isSingleVault = _isSingleVault;
         isAutoComp = false;
-
-        earnedToToken0Path = _earnedToToken0Path;
-        earnedToToken1Path = _earnedToToken1Path;
-        token0ToEarnedPath = _token0ToEarnedPath;
-        token1ToEarnedPath = _token1ToEarnedPath;
-        earned0ToEarnedPath = _earned0ToEarnedPath;
 
         withdrawFeeFactor = _withdrawFeeFactor;
     }

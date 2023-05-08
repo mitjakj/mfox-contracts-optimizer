@@ -4,7 +4,7 @@ pragma solidity 0.8.13;
 interface IXswapFarm {
     function poolLength() external view returns (uint256);
 
-    function userInfo(uint256 _pid, address _address) external view returns (uint256);
+    function userInfo(uint256 _pid, address _address) external view returns (uint256, uint256);
 
     // Return reward multiplier over the given _from to _to block.
     function getMultiplier(uint256 _from, uint256 _to)

@@ -1,13 +1,13 @@
 const hre = require("hardhat");
-const path = require('path');
-const scriptName = path.basename(__filename);
 const addresses = hre.network.config.constants;
-const constants = require("../../../../constants.js");
+
+const pathSplit = __filename.split('/');
+const scriptName = pathSplit[pathSplit.length - 2]
 
 async function main() {
     
-    const POOL_LP = hre.ethers.constants.AddressZero;
-    const CHAIN_ID = constants.ARBITRUM.lzChainId; // 0 for BSC, otherwise set it to constants.{CHAIN}.lzChainId
+    const POOL_LP = addresses.usdt;
+    const CHAIN_ID = 0; // 0 for BSC, otherwise set it to constants.{CHAIN}.lzChainId
 
     /* !!! Don't change the code below !!! */
     /* !!! Don't change the code below !!! */
@@ -15,8 +15,8 @@ async function main() {
 
     const PID = scriptName.split('-')[0];
     const deployer = (await hre.ethers.getSigners())[0];
-    const BLUECHIP = await hre.ethers.getContractAt('BluechipVoter', addresses.bluechipVoter, deployer);
-    const poolLength = await BLUECHIP.length();
+    const VOTER = await hre.ethers.getContractAt('BluechipVoter', addresses.bluechipVoter, deployer);
+    const poolLength = await VOTER.length();
 
     console.log(`Add gauge: ${scriptName}`);
 
@@ -27,10 +27,10 @@ async function main() {
         return;
     }
 
-    tx = await BLUECHIP.createGauge(POOL_LP, CHAIN_ID);
+    tx = await VOTER.createGauge(POOL_LP, CHAIN_ID);
     await tx.wait();
     console.log("gauge created");
-    const gauge = await BLUECHIP.gaugeList(PID);
+    const gauge = await VOTER.gaugeList(PID);
     console.log(`gauge address: ${gauge}`);
 
     // base, _ve, _pool, address(this), _internal_bribe, _external_bribe, address(0), isPair
