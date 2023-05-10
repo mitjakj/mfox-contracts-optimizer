@@ -8,37 +8,26 @@ module.exports = {
   BSC_VOTER: {
     pool0: {
       // single_PHIL
-      token: constants.BSC.phil,
       gauge: '0x2AdC3185169D53ef4E447FC219A9f24CDD6FeA90',
       strategy: '0x0cf5af3Cf5A5192F9e1369Fc917E7c9Fae39aC9F',
     },
     pool1: {
       // biswapLP_busd_wbnb -- DEPRECATED
-      token: constants.BSC.biswapLP_busd_wbnb,
       gauge: '0xa5cc506ac2e593fcbA08a1312E7377442D96E0CC',
       strategy: '0x902F420656F56526Ec9EED94D49109FEdc0781ec',
     },
     pool2: {
       // ARBITRUM USDC
+      chainId: constants.ARBITRUM.lzChainId,
       gauge: '0x48EA80D75eC52D05fF540f43493387C0694636e1',
-      chainId: constants.ARBITRUM.lzChainId
+      sideGauge: '0x87f94dE1af55B2513928E835f060eA99128b57e8',
+      strategy: '0xd46b174256159Af9dcd8541280AA5C6600fBBcc9',
     },
     pool3: {
       // biswapLP_busd_wbnb
-      token: constants.BSC.biswapLP_busd_wbnb,
       gauge: '0x2ebf315d92FE35D657e5362a50A5ff8EdF8f5a88',
       strategy: '0xbC1eC6e545f5df5CD7C405d675039408b29C786D',
     },
-  },
-
-  /**
-   * ARBITRUM - VOTER pools
-   */
-  ARBITRUM_VOTER: {
-    // pool0: {
-    //   // volatile_USDC_WETH
-    //   gauge: '',
-    // },
   },
 
   /**
@@ -47,33 +36,36 @@ module.exports = {
   BSC_BLUECHIP: {
     pool0: {
       // USDT
-      token: constants.BSC.usdt,
       gauge: '0xe3882821C1A2d0302e8E7BF7E67e90A933ADfaE2',
       strategy: '0x3091d213Ce67e2B5454bB92C2b53b95C4755a47e',
-      allocPts: 500,
+      allocPts: 0,
     },
     pool1: {
       // BUSD
-      token: constants.BSC.busd,
       gauge: '0xa8FAc4db44CA6879CC26dEfdBa71a5c727Ca6D99',
       strategy: '0x80f14FA8305D0cfD9cBfD2E7Aa1A61369d766695',
-      allocPts: 250,
+      allocPts: 0,
     },
     pool2: {
       // WETH
-      gauge: '0x805107EA43687dA0cb3aDe5f8C9fD10BE688b59C',
       chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0x805107EA43687dA0cb3aDe5f8C9fD10BE688b59C',
+      sideGauge: '0xc1c6aca9C1581A6A4D5Ca0272e6a16617CDB66a6',
+      strategy: '0x4d66E9727748E110382559889ea173a4E1a72C69',
+      allocPts: 250,
+    },
+    pool3: {
+      // USDT
+      gauge: '0x3F26A0eb2E00356Edff8Bf34Ca60d0F52Dc62196',
+      strategy: '0xF81F1774135826D2e2F31752E7efE9964F3bcd38',
+      allocPts: 500,
+    },
+    pool4: {
+      // BUSD
+      gauge: '0x5351C7439d36dCC9995d0FF7D50acD461F65a4F8',
+      strategy: '0x74045EA1dD2059a3cAE7D61443862E7465d00044',
       allocPts: 250,
     },
   },
 
-  /**
-   * ARBITRUM - BLUECHIP pools
-   */
-  ARBITRUM_BLUECHIP: {
-    // pool0: {
-    //   // stable_USDC_USDT
-    //   gauge: '',
-    // },
-  }
 };
