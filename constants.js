@@ -51,8 +51,39 @@ module.exports = {
     /* swap */
 
     /* token */
+    token: '0x04aAd814f9f99aa12B5fD3fAf20a544A07C4d8f8', 
+    veToken: '0x8FdFEBef76c06Fe88BB3752B77966421c85c93ad', 
+
+    /* dao */
+    bribeFactory: '0x947459c46c6Db860a286eA4840ef38ff2b967333', 
+    gaugeFactory: '0x433275945D62171F470ABA021F04AbE898B0003e', 
+    voter: '0xC334eF762dEBb9C7745099754A39e52403096BEd',
+    bluechipVoter: '0x8fBF906A5cCcA19236b5Ca983F46672CEA3f4dB3',
+    bluechipFeeCollector: '', 
+    lzReceiver: '0x37929B0786fc1Fb5207C52656Aac79C95C39C8ff', 
+    lzReceiverBluechip: '0xa397e80DFcecFd182EDd18168a8A6bfD012706DE', 
+
+    /* LZ */
+    lzChainId: 110,
+    lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
+
+    /* UpgradableContracts admin */
+    timelocker: '',
+    proxyAdmin: ''
+  },
+
+  POLYGON: {
+    /* general */
+    weth: '',
+    usdt: '',
+    usdc: '',
+
+    /* LPs */
+
+    /* swap */
+
+    /* token */
     token: '', 
-    veArt: '', 
     veToken: '', 
 
     /* dao */
@@ -65,7 +96,7 @@ module.exports = {
     lzReceiverBluechip: '', 
 
     /* LZ */
-    lzChainId: 110,
+    lzChainId: 109,
     lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
 
     /* UpgradableContracts admin */

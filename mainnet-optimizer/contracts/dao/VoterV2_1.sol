@@ -375,6 +375,7 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function distributeSidechain(uint16 chainId, uint256 period, uint256 dstGasLimit, uint256 from, uint256 to) public payable nonReentrant {
         require(chainId > 0, "invalid chainId");
+        require(sidechainManager[chainId] != address(0), "sidechainManager not set");
         address _gauge;
         uint256 _totalClaimable;
         uint256 gaugesToProcess = to - from;
