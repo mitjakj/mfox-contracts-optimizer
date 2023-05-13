@@ -53,6 +53,8 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     mapping(uint => uint) public lastVoted; // nft => timestamp of last vote, to ensure one vote per epoch
     mapping(address => bool) public isGauge;
     mapping(address => bool) public isAlive;
+    mapping(uint => address[]) public gaugeVoteHistory; // nft => gauges -- all time
+    mapping(uint => mapping(address => bool)) public isGaugeVoteHistory; // hold data if nft voted for gauge at any time in history
 
     event GaugeCreated(address indexed gauge, address creator, address internal_bribe, address indexed external_bribe, address indexed pool);
     event GaugeKilled(address indexed gauge);
@@ -177,6 +179,12 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 _updateFor(_gauge);
 
                 gaugeVote[_tokenId].push(_gauge);
+
+                // Save gauge addresses that NFT voted for, needed for easier claiming
+                if (isGaugeVoteHistory[_tokenId][_gauge] == false) {
+                    isGaugeVoteHistory[_tokenId][_gauge] = true;
+                    gaugeVoteHistory[_tokenId].push(_gauge);
+                }
 
                 weights[_gauge] += _gaugeWeight;
                 votes[_tokenId][_gauge] += _gaugeWeight;

@@ -58,13 +58,19 @@ module.exports = {
       // USDT
       gauge: '0x3F26A0eb2E00356Edff8Bf34Ca60d0F52Dc62196',
       strategy: '0xF81F1774135826D2e2F31752E7efE9964F3bcd38',
-      allocPts: 500,
+      allocPts: 0,
     },
     pool4: {
       // BUSD
       gauge: '0x5351C7439d36dCC9995d0FF7D50acD461F65a4F8',
       strategy: '0x74045EA1dD2059a3cAE7D61443862E7465d00044',
       allocPts: 250,
+    },
+    pool5: {
+      // USDT
+      gauge: '0xBd712b91486177462666aDc5BF40b9291d1a9c17',
+      strategy: '0xB23D1Edaf6873EC2d88f6Db425e4d6206481b118',
+      allocPts: 500,
     },
   },
 
