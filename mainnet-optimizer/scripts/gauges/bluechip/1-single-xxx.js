@@ -20,7 +20,7 @@ async function main() {
     const IS_BLUECHIP = folder == 'bluechip'; // This constant should not be changed !!!
     const PID = scriptName.split('-')[0]; // This constant should not be changed !!!
     const GAUGE = pools[folder == 'bluechip' ? 'BSC_BLUECHIP' : 'BSC_VOTER'][`pool${PID}`]; // This constant should not be changed !!!
-    const GAUGE_ADDRESS = GAUGE.GAUGE; // This constant should not be changed !!!
+    const GAUGE_ADDRESS = GAUGE.gauge; // This constant should not be changed !!!
 
     // Strategy parameters
     const STRATEGY_NAME = "Strategy_Native";

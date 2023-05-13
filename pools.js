@@ -72,6 +72,12 @@ module.exports = {
       strategy: '0xB23D1Edaf6873EC2d88f6Db425e4d6206481b118',
       allocPts: 500,
     },
+    pool6: {
+      // biswapLP_usdt_wbnb
+      gauge: '0xba97E2Aa89f4dF3e114c77BC10Be6cE7f24bf953',
+      strategy: '0x825De6d4e64aa8a3BA2e220e501a491Ac9e0f354',
+      allocPts: 250,
+    },
   },
 
 };
