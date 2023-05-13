@@ -34,6 +34,7 @@ module.exports = {
 
     /* LPs */
     biswapLP_busd_wbnb: '0xaCAac9311b0096E04Dfe96b6D87dec867d3883Dc',
+    biswapLP_usdt_wbnb: '0x8840C6252e2e86e545deFb6da98B2a0E26d8C1BA',
 
     /* farms */
     biswapFarm: '0xDbc1A13490deeF9c3C12b44FE77b503c1B061739',

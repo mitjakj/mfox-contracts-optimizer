@@ -14,21 +14,36 @@ async function main() {
     // Set constants [START]
     // Set constants [START]
     const CHAIN_ID = 0; // 0 for BSC, otherwise set it to constants.{CHAIN}.lzChainId
-    const LP_TOKEN = addresses.usdt;
+    const LP_TOKEN = addresses.biswapLP_busd_wbnb;
     const IS_LP = false;
 
     const IS_BLUECHIP = folder == 'bluechip'; // This constant should not be changed !!!
     const PID = scriptName.split('-')[0]; // This constant should not be changed !!!
-    const GAUGE = pools[folder == 'bluechip' ? 'BSC_BLUECHIP' : 'BSC_VOTER'][`pool${PID}`]; // This constant should not be changed !!!
+    const GAUGE = pools[IS_BLUECHIP ? 'BSC_BLUECHIP' : 'BSC_VOTER'][`pool${PID}`]; // This constant should not be changed !!!
     const GAUGE_ADDRESS = GAUGE.gauge; // This constant should not be changed !!!
 
     // Strategy parameters
-    const STRATEGY_NAME = "Strategy_Native";
+    const STRATEGY_NAME = "Strategy_Biswap";
     const strategyParams = [
-        [GAUGE_ADDRESS,deployer.address],
-        [LP_TOKEN],
+        [
+            GAUGE_ADDRESS,
+            addresses.biswapFarm,
+            deployer.address,
+            addresses.biswapRouter,
+        ],
+        [
+            addresses.wbnb, 
+            LP_TOKEN, 
+            addresses.bsw,
+            addresses.wbnb,
+            addresses.busd
+        ],
+        false,
         true,
-        10000
+        3,
+        [addresses.bsw, addresses.wbnb],
+        [addresses.bsw, addresses.wbnb, addresses.busd],
+        9990
     ]
     // Set constants [END]
     // Set constants [END]
