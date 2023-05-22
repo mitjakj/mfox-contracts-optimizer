@@ -514,6 +514,10 @@ contract VoterV2_1 is IVoter, OwnableUpgradeable, ReentrancyGuardUpgradeable {
         return chainGauges[_chainId];
     }
 
+    function gaugeVoteHistoryList(uint256 _tokenId) external view returns(address[] memory){
+        return gaugeVoteHistory[_tokenId];
+    }
+
     struct BribeData {
         address[] rewardTokens;
         uint256[] earned;
