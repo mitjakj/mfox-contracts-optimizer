@@ -21,7 +21,7 @@ module.exports = {
     bluechipVoter: '0x718De41f5Bd686d7063132b60b661ccD42C654BA',  // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
     bluechipFeeCollector: '', 
     rewardDistributorToken: '0xb0E20b19DE6f9Af367060D89FCFFA64D99eE7325', 
-    rewardDistributorUsdc: '', 
+    rewardDistributorUsdc: '0x1D038F904fDCF245577e0Ef6cE02E3a6C3EF08E0', 
     minter: '0x4B57807C90eeEC43D07Ccac4c048F3d910620Bd9', 
 
     /* LZ */
