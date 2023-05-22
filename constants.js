@@ -84,8 +84,8 @@ module.exports = {
     /* swap */
 
     /* token */
-    token: '', 
-    veToken: '', 
+    token: '0x4BeC44fEe2c11c604b84453FC166D1509C25C973', 
+    veToken: '0xbd1d7aa2188043FA9570624002fbC6eb4f2c3Ed2', 
 
     /* dao */
     bribeFactory: '', 

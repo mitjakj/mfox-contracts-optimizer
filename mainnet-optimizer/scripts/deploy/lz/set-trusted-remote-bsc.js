@@ -11,9 +11,9 @@ async function main() {
     await tx.wait();
     console.log("setTrustedRemoteAddress ARBITRUM");
 
-    // tx = await TOKEN.setTrustedRemoteAddress(constants.POLYGON.lzChainId, constants.POLYGON.token);
-    // await tx.wait();
-    // console.log("setTrustedRemoteAddress POLYGON");
+    tx = await TOKEN.setTrustedRemoteAddress(constants.POLYGON.lzChainId, constants.POLYGON.token);
+    await tx.wait();
+    console.log("setTrustedRemoteAddress POLYGON");
 }
 
 main()
