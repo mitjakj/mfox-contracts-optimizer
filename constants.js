@@ -7,6 +7,7 @@ module.exports = {
     phil: '0xB48837F0C05c0931c7B3DcFDceA0365396c39F3A', 
     busd: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 
     bsw: '0x965F527D9159dCe6288a2219DB51fc6Eef120dD1', 
+    babydoge: '0xc748673057861a797275CD8A068AbB95A902e8de',
 
     /* token */
     token: '0xFfc1C2b7f6D4a1b7DD9C349DB11242241EcD8Ddf', 
@@ -36,9 +37,14 @@ module.exports = {
     biswapLP_busd_wbnb: '0xaCAac9311b0096E04Dfe96b6D87dec867d3883Dc',
     biswapLP_usdt_wbnb: '0x8840C6252e2e86e545deFb6da98B2a0E26d8C1BA',
 
+    babydogeLP_busd_usdt: '0xc769FA5aC102ffb129c2BA5F31a4d071cE454fc2',
+
     /* farms */
     biswapFarm: '0xDbc1A13490deeF9c3C12b44FE77b503c1B061739',
     biswapRouter: '0x3a6d8cA21D1CF76F653A67577FA0D27453350dD8',
+
+    babydogeRouter: '0xC9a0F685F39d05D835c369036251ee3aEaaF3c47',
+    babydogeFarm_busd_usdt: '0x3FDbAF9eE8AD48d2bD9204210234afb4aD651FB0',
   },
 
   ARBITRUM: {
