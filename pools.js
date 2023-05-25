@@ -78,6 +78,12 @@ module.exports = {
       strategy: '0x825De6d4e64aa8a3BA2e220e501a491Ac9e0f354',
       allocPts: 250,
     },
+    pool7: {
+      // babydogeLP_busd_usdt
+      gauge: '0xC5Be5268FC66262ca9a01Ff820f29e1b7767724d',
+      strategy: '0xF717321fa7dC19b1785e20895359c522b1cB73Ff',
+      allocPts: 100,
+    },
   },
 
 };

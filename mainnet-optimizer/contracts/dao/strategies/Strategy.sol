@@ -73,7 +73,7 @@ abstract contract Strategy is Ownable, Pausable {
         return IERC20(wantAddress).balanceOf(address(this));
     }
 
-    function balanceOfStakedWant() public view returns (uint256) {
+    function balanceOfStakedWant() public virtual view returns (uint256) {
         if (farmContractAddress != address(0)) {
             (uint256 _amount,) = IXswapFarm(farmContractAddress).userInfo(pid, address(this));
             return _amount;
