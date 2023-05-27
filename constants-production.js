@@ -69,5 +69,37 @@ module.exports = {
     /* UpgradableContracts admin */
     timelocker: '',
     proxyAdmin: ''
+  },
+
+  POLYGON: {
+    /* general */
+    weth: '',
+    usdt: '',
+    usdc: '',
+
+    /* LPs */
+
+    /* swap */
+
+    /* token */
+    token: '0x967F4B82D8B7eD38f655CCf084150180c8165AC5', 
+    veToken: '', 
+
+    /* dao */
+    bribeFactory: '', 
+    gaugeFactory: '', 
+    voter: '',
+    bluechipVoter: '',
+    bluechipFeeCollector: '', 
+    lzReceiver: '', 
+    lzReceiverBluechip: '', 
+
+    /* LZ */
+    lzChainId: 109,
+    lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
+
+    /* UpgradableContracts admin */
+    timelocker: '',
+    proxyAdmin: ''
   }
 };

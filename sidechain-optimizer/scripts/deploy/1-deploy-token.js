@@ -4,8 +4,8 @@ async function main() {
     const addresses = hre.network.config.constants;
     const ContractF = await hre.ethers.getContractFactory("OFT");
     const contr = await ContractF.deploy(
-        'Kathy', // string memory _name
-        'KAT', // string memory _symbol
+        'Magic Shroom', // string memory _name
+        'SHROOM', // string memory _symbol
         addresses.lzEndpoint, // address _lzEndpoint
     );
 
