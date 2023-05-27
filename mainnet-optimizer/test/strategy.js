@@ -144,7 +144,6 @@ describe("Strategy", function() {
       [],
       [],
       [],
-      [],
       10000
     );
     await STRATEGY.deployed();

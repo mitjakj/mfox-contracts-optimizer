@@ -79,9 +79,21 @@ module.exports = {
       allocPts: 250,
     },
     pool7: {
-      // babydogeLP_busd_usdt
+      // babydogeLP_busd_usdt -- DEPRECATED
       gauge: '0xC5Be5268FC66262ca9a01Ff820f29e1b7767724d',
       strategy: '0xF717321fa7dC19b1785e20895359c522b1cB73Ff',
+      allocPts: 0,
+    },
+    pool8: {
+      // thenaLP_frax_busd
+      gauge: '0xd9A8e2bE2f63AB571415B56cB1eB17f0581Fd4b1',
+      strategy: '0x0913ff21a221Ec6Abda25D68A4A96BE5c027cBa5',
+      allocPts: 100,
+    },
+    pool9: {
+      // thenaGammaLP_usdt_usdc
+      gauge: '0xbe5C903E60af937E5Ef46AAc6EA4febDDAf4A477',
+      strategy: '0x85A65DdC590b57A553CdB03638C987D6E2AeC5cc',
       allocPts: 100,
     },
   },

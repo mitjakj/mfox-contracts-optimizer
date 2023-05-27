@@ -65,11 +65,11 @@ abstract contract Strategy is Ownable, Pausable {
         _;
     }
 
-    function balanceOf() public view returns (uint256) {
+    function balanceOf() public virtual view returns (uint256) {
         return balanceOfWant() + balanceOfStakedWant();
     }
 
-    function balanceOfWant() public view returns (uint256) {
+    function balanceOfWant() public virtual view returns (uint256) {
         return IERC20(wantAddress).balanceOf(address(this));
     }
 
@@ -88,7 +88,7 @@ abstract contract Strategy is Ownable, Pausable {
         virtual
         whenNotPaused
     {
-        uint256 wantBal = IERC20(wantAddress).balanceOf(address(this));
+        uint256 wantBal = balanceOfWant();
         if (isAutoComp && wantBal > 0) {
             _farm();
         }

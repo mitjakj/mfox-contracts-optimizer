@@ -6,7 +6,9 @@ module.exports = {
     usdc: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
     phil: '0xB48837F0C05c0931c7B3DcFDceA0365396c39F3A', 
     busd: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 
-    bsw: '0x965F527D9159dCe6288a2219DB51fc6Eef120dD1', 
+    bsw: '0x965F527D9159dCe6288a2219DB51fc6Eef120dD1',
+    the: '0xF4C8E32EaDEC4BFe97E0F595AdD0f4450a863a11',
+    frax: '0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40',
     babydoge: '0xc748673057861a797275CD8A068AbB95A902e8de',
 
     /* token */
@@ -37,11 +39,19 @@ module.exports = {
     biswapLP_busd_wbnb: '0xaCAac9311b0096E04Dfe96b6D87dec867d3883Dc',
     biswapLP_usdt_wbnb: '0x8840C6252e2e86e545deFb6da98B2a0E26d8C1BA',
 
+    thenaGammaLP_usdt_usdc: '0x5eeca990e9b7489665f4b57d27d92c78bc2afbf2',
+    thenaLP_frax_busd: '0x7fcfe6b06c1f6aad14884ba24a7f315c1c0c2cef',
+    thenaGauge_stable_frax_busd: '0x7a8a0607f1c4ce060e7308baf650264fdc6473d7',
     babydogeLP_busd_usdt: '0xc769FA5aC102ffb129c2BA5F31a4d071cE454fc2',
 
     /* farms */
     biswapFarm: '0xDbc1A13490deeF9c3C12b44FE77b503c1B061739',
     biswapRouter: '0x3a6d8cA21D1CF76F653A67577FA0D27453350dD8',
+    
+    thenaUniProxy: '0x6B3d98406779DDca311E6C43553773207b506Fa6',
+    thenaSwapRouter: '0x327Dd3208f0bCF590A66110aCB6e5e6941A4EfA0',
+    thenaRouterV2: '0xd4ae6eCA985340Dd434D38F470aCCce4DC78D109',
+    thenaGammaGauge_stable_usdt_usd: '0x1011530830c914970caa96a52b9da1c709ea48fb',
 
     babydogeRouter: '0xC9a0F685F39d05D835c369036251ee3aEaaF3c47',
     babydogeFarm_busd_usdt: '0x3FDbAF9eE8AD48d2bD9204210234afb4aD651FB0',
