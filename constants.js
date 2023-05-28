@@ -4,57 +4,43 @@ module.exports = {
     wbnb: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
     usdt: '0x55d398326f99059fF775485246999027B3197955',
     usdc: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
-    phil: '0xB48837F0C05c0931c7B3DcFDceA0365396c39F3A', 
     busd: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 
-    bsw: '0x965F527D9159dCe6288a2219DB51fc6Eef120dD1',
-    the: '0xF4C8E32EaDEC4BFe97E0F595AdD0f4450a863a11',
-    frax: '0x90C97F71E18723b0Cf0dfa30ee176Ab653E89F40',
-    babydoge: '0xc748673057861a797275CD8A068AbB95A902e8de',
+    bsw: '0x965F527D9159dCe6288a2219DB51fc6Eef120dD1', 
 
     /* token */
-    token: '0xFfc1C2b7f6D4a1b7DD9C349DB11242241EcD8Ddf', 
-    proxyOFT: '0xB0Ed98f278E6f74302891dC77f4A1fC26e382b53', 
-    veArt: '0xf28672391e37AB540BA53682d295847f036EE391', 
-    veToken: '0x481d195135E9263fF5ee6596c19F4717922E3Bf2', 
+    token: '0x967F4B82D8B7eD38f655CCf084150180c8165AC5', 
+    proxyOFT: '0x6E5b15894106A5e2eA9d26ae45354AD004291eF5', 
+    veArt: '0x41c42D2AA40013962d1C184a47606e4718259ff8', 
+    veToken: '0x6a07Cc5C621d8A1f8Ce25f449B49FaAD5dCBb8Ee', 
+
+    /* chainlink */
+    chainlinkEpochController: '0xF4c0E6238cF8166Bcb11eCbC0519FCc47b086864',
+    chainlinkWeeklyEmissionBridge_ARBITRUM: '0xa9b2382d501bb6bA6DC059314FE68Ea4f3a6Dc12',
+    chainlinkWeeklyEmissionBridge_POLYGON: '0x3A6eA83967ADAA626Fd6A7119ABe199439f7085f',
+    bluechipFeeCollector: '0xB09ee0d4C7AcD7936BFafBFbEa971d51ba8cef0d', 
 
     /* dao */
-    bribeFactory: '0x5C45546bf5E914F78b2979D96968A1a6aa0d04b6', 
-    gaugeFactory: '0x231e82f53139BB1d201f66B20266cD427112B1F5', 
-    voter: '0x1888c948e0B5EC6c589666b67BefD412326bF199', // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
-    bluechipVoter: '0x718De41f5Bd686d7063132b60b661ccD42C654BA',  // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
-    bluechipFeeCollector: '', 
-    rewardDistributorToken: '0xb0E20b19DE6f9Af367060D89FCFFA64D99eE7325', 
-    rewardDistributorUsdc: '0x1D038F904fDCF245577e0Ef6cE02E3a6C3EF08E0', 
-    minter: '0x4B57807C90eeEC43D07Ccac4c048F3d910620Bd9', 
+    bribeFactory: '0xe6929972bFae2B5dd951573c92df78963236Ae40', 
+    gaugeFactory: '0xeA1fE843c043c42228B5E595Ccadc65268A1eBD1', 
+    voter: '0x3Bb920C4875411C40981f6eb6959d4e169877A66', // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
+    bluechipVoter: '0xaE0439eC64985D4165d12dDE7F514D092B4C0E23',  // !!!! VERIFY IN CODE HARD-CODED LZ ENDPOINT ADDRESS !!!!
+    rewardDistributorToken: '0x49A479A56C79fb344919f695ec928083c5E994E1', 
+    rewardDistributorUsdc: '0xEF42D535D15218a6753C605DbaCa81b9C809fde3', 
+    minter: '0xddD34FF994cc9d1A9E3464fCA27AD0D4F01b564F', 
 
     /* LZ */
     lzChainId: 102,
     lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
 
     /* UpgradableContracts admin */
-    timelocker: '0x5d0d83EF1C1f8217cbD0D3D0802E47B8Bcd72207',
-    proxyAdmin: '0x326203DF24FFb5319bc87C7915c838F871d6C02D',
+    timelocker: '',
+    proxyAdmin: '',
 
     /* LPs */
-    biswapLP_busd_wbnb: '0xaCAac9311b0096E04Dfe96b6D87dec867d3883Dc',
-    biswapLP_usdt_wbnb: '0x8840C6252e2e86e545deFb6da98B2a0E26d8C1BA',
-
-    thenaGammaLP_usdt_usdc: '0x5eeca990e9b7489665f4b57d27d92c78bc2afbf2',
-    thenaLP_frax_busd: '0x7fcfe6b06c1f6aad14884ba24a7f315c1c0c2cef',
-    thenaGauge_stable_frax_busd: '0x7a8a0607f1c4ce060e7308baf650264fdc6473d7',
-    babydogeLP_busd_usdt: '0xc769FA5aC102ffb129c2BA5F31a4d071cE454fc2',
 
     /* farms */
     biswapFarm: '0xDbc1A13490deeF9c3C12b44FE77b503c1B061739',
     biswapRouter: '0x3a6d8cA21D1CF76F653A67577FA0D27453350dD8',
-    
-    thenaUniProxy: '0x6B3d98406779DDca311E6C43553773207b506Fa6',
-    thenaSwapRouter: '0x327Dd3208f0bCF590A66110aCB6e5e6941A4EfA0',
-    thenaRouterV2: '0xd4ae6eCA985340Dd434D38F470aCCce4DC78D109',
-    thenaGammaGauge_stable_usdt_usd: '0x1011530830c914970caa96a52b9da1c709ea48fb',
-
-    babydogeRouter: '0xC9a0F685F39d05D835c369036251ee3aEaaF3c47',
-    babydogeFarm_busd_usdt: '0x3FDbAF9eE8AD48d2bD9204210234afb4aD651FB0',
   },
 
   ARBITRUM: {
@@ -63,22 +49,20 @@ module.exports = {
     usdt: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
     usdc: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
 
-    /* LPs */
-
-    /* swap */
-
     /* token */
-    token: '0x04aAd814f9f99aa12B5fD3fAf20a544A07C4d8f8', 
-    veToken: '0x8FdFEBef76c06Fe88BB3752B77966421c85c93ad', 
+    token: '0xEB79217B2802dfD54b6135c19a6AA2164bBD3a51', 
+    veToken: '0x441b9E685d55F4a9Ee8cF315269ba4fFefB0bc73', 
+
+    /* chainlink */
+    bluechipFeeCollector: '0xF2Fc2b5950f323ad90A210f9f1264392261d3Ae9', 
 
     /* dao */
-    bribeFactory: '0x947459c46c6Db860a286eA4840ef38ff2b967333', 
-    gaugeFactory: '0x433275945D62171F470ABA021F04AbE898B0003e', 
-    voter: '0xC334eF762dEBb9C7745099754A39e52403096BEd',
-    bluechipVoter: '0x8fBF906A5cCcA19236b5Ca983F46672CEA3f4dB3',
-    bluechipFeeCollector: '', 
-    lzReceiver: '0x37929B0786fc1Fb5207C52656Aac79C95C39C8ff', 
-    lzReceiverBluechip: '0xa397e80DFcecFd182EDd18168a8A6bfD012706DE', 
+    bribeFactory: '', 
+    gaugeFactory: '0xf999009fF931749a0930B8db02C6Cd888c7DC5ED', 
+    voter: '0x01A07719596713bE5aB1C3AeEA76e3f5fde0885d',
+    bluechipVoter: '0xF995f72445B14ae8D56523C9A0dE3F03334BFE2C',
+    lzReceiver: '0xD99aD5B67c79D4DF30Ff94c895961eCb7A46d1A3', 
+    lzReceiverBluechip: '0xFf62D3b653036ab770A60b40C927B23D19192Ee5', 
 
     /* LZ */
     lzChainId: 110,
@@ -86,31 +70,33 @@ module.exports = {
 
     /* UpgradableContracts admin */
     timelocker: '',
-    proxyAdmin: ''
+    proxyAdmin: '',
+
+    /* LPs */
+
+    /* farms */
   },
 
   POLYGON: {
     /* general */
     weth: '',
     usdt: '',
-    usdc: '',
-
-    /* LPs */
-
-    /* swap */
+    usdc: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
 
     /* token */
-    token: '0x4BeC44fEe2c11c604b84453FC166D1509C25C973', 
-    veToken: '0xbd1d7aa2188043FA9570624002fbC6eb4f2c3Ed2', 
+    token: '0x967F4B82D8B7eD38f655CCf084150180c8165AC5', 
+    veToken: '0xEB79217B2802dfD54b6135c19a6AA2164bBD3a51', 
+
+    /* chainlink */
+    bluechipFeeCollector: '0x3920D9E2bcF06B1Fd9BB5E2691ae5839914b392D', 
 
     /* dao */
     bribeFactory: '', 
-    gaugeFactory: '', 
-    voter: '',
-    bluechipVoter: '',
-    bluechipFeeCollector: '', 
-    lzReceiver: '', 
-    lzReceiverBluechip: '', 
+    gaugeFactory: '0x2e3C958784f0caD0DA7DB3FfdB73c80aa9d8e034', 
+    voter: '0x3F316559EB4f493C75638425106144261e20F3a2',
+    bluechipVoter: '0xf999009fF931749a0930B8db02C6Cd888c7DC5ED',
+    lzReceiver: '0x8e0B4Be5aeA18949700673402c9f7484B5880462', 
+    lzReceiverBluechip: '0x01A07719596713bE5aB1C3AeEA76e3f5fde0885d', 
 
     /* LZ */
     lzChainId: 109,
@@ -118,6 +104,10 @@ module.exports = {
 
     /* UpgradableContracts admin */
     timelocker: '',
-    proxyAdmin: ''
+    proxyAdmin: '',
+
+    /* LPs */
+
+    /* farms */
   }
 };
