@@ -59,9 +59,11 @@ module.exports = {
 
   ARBITRUM: {
     /* general */
+    arb: '0x912CE59144191C1204E64559FE8253a0e49E6548',
     weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
     usdt: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
     usdc: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+    ram: '0xAAA6C1E32C55A7Bfa8066A6FAE9b42650F262418',
 
     /* LPs */
 
@@ -86,7 +88,14 @@ module.exports = {
 
     /* UpgradableContracts admin */
     timelocker: '',
-    proxyAdmin: ''
+    proxyAdmin: '',
+
+    /* LPs */
+    ramsesLP_v_weth_usdc: '0x5513a48F3692Df1d9C793eeaB1349146B2140386',
+
+    /* farms */
+    ramsesRouter: '0xaaa87963efeb6f7e0a2711f397663105acb1805e',
+    ramsesGauge_v_weth_usdc: '0xdba865f11bb0a9cd803574edd782d8b26ee65767',
   },
 
   POLYGON: {

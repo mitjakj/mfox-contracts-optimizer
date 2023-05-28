@@ -65,15 +65,15 @@ abstract contract Strategy is Ownable, Pausable {
         _;
     }
 
-    function balanceOf() public view returns (uint256) {
+    function balanceOf() public virtual view returns (uint256) {
         return balanceOfWant() + balanceOfStakedWant();
     }
 
-    function balanceOfWant() public view returns (uint256) {
+    function balanceOfWant() public virtual view returns (uint256) {
         return IERC20(wantAddress).balanceOf(address(this));
     }
 
-    function balanceOfStakedWant() public view returns (uint256) {
+    function balanceOfStakedWant() public virtual view returns (uint256) {
         if (farmContractAddress != address(0)) {
             (uint256 _amount,) = IXswapFarm(farmContractAddress).userInfo(pid, address(this));
             return _amount;
@@ -88,7 +88,7 @@ abstract contract Strategy is Ownable, Pausable {
         virtual
         whenNotPaused
     {
-        uint256 wantBal = IERC20(wantAddress).balanceOf(address(this));
+        uint256 wantBal = balanceOfWant();
         if (isAutoComp && wantBal > 0) {
             _farm();
         }
@@ -362,14 +362,6 @@ abstract contract Strategy is Ownable, Pausable {
         require(_token != earnedAddress, "!safe");
         require(_token != wantAddress, "!safe");
         IERC20(_token).safeTransfer(_to, _amount);
-    }
-
-    function _wrapFTM() internal virtual onlyAllowGov {
-        // FTM -> WFTM
-        uint256 ftmBal = address(this).balance;
-        if (ftmBal > 0) {
-            IWFTM(wftmAddress).deposit{value: ftmBal}(); // FTM -> WFTM
-        }
     }
 
     function _safeSwap(

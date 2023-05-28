@@ -364,14 +364,6 @@ abstract contract Strategy is Ownable, Pausable {
         IERC20(_token).safeTransfer(_to, _amount);
     }
 
-    function _wrapFTM() internal virtual onlyAllowGov {
-        // FTM -> WFTM
-        uint256 ftmBal = address(this).balance;
-        if (ftmBal > 0) {
-            IWFTM(wftmAddress).deposit{value: ftmBal}(); // FTM -> WFTM
-        }
-    }
-
     function _safeSwap(
         address _uniRouterAddress,
         uint256 _amountIn,
