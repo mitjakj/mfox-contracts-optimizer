@@ -105,8 +105,6 @@ contract Strategy_Ramses is Strategy {
         uint256 earnedAmt = IERC20(earnedAddress).balanceOf(address(this));
 
         earnedAmt = distributeFees(earnedAmt);
-        // (uint256 amt_start, uint256 amt_end) = IUniProxy(uniProxyAddress).getDepositAmount(wantAddress, token0Address, 10000);
-        // uint256 token1Factor = (amt_start + amt_end) / 2;
         uint256 earned0Amt = earnedAmt / 2;
         uint256 earned1Amt = earnedAmt - earned0Amt;
 
