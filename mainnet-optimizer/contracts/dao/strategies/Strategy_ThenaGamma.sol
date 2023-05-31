@@ -228,4 +228,16 @@ contract Strategy_ThenaGamma is Strategy {
         });
         ISwapRouter(_uniRouterAddress).exactInput(params);
     }
+
+    function updateEarnedPathEncoded(
+        bytes memory _earnedToToken0Path,
+        bytes memory _earnedToToken1Path,
+        bytes memory _token0ToEarnedPath,
+        bytes memory _token1ToEarnedPath
+    ) external onlyAllowGov {
+        encodedEarnedToToken0Path = _earnedToToken0Path;
+        encodedEarnedToToken1Path = _earnedToToken1Path;
+        encodedToken0ToEarnedPath = _token0ToEarnedPath;
+        encodedToken1ToEarnedPath = _token1ToEarnedPath;
+    }
 }

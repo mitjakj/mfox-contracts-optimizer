@@ -46,7 +46,7 @@ abstract contract Strategy is Ownable, Pausable {
     uint256 public partnerFee;
     address public partnerFeeAddress;
     uint256 public voterFee = 2500; // 25% of controllerFee
-    address public voterFeeAddress;
+    address public voterFeeAddress = 0xB09ee0d4C7AcD7936BFafBFbEa971d51ba8cef0d; // BSC ADDRESS
 
     uint256 public withdrawFeeFactor;
     uint256 public constant withdrawFeeFactorMax = 10000;
@@ -392,5 +392,26 @@ abstract contract Strategy is Ownable, Pausable {
             _to,
             _deadline
         );
+    }
+
+    function updateEarnedPath(
+        address[] memory _earnedToToken0Path,
+        address[] memory _earnedToToken1Path
+    ) external onlyAllowGov {
+        delete earnedToToken0Path;
+        delete earnedToToken1Path;
+        delete token0ToEarnedPath;
+        delete token1ToEarnedPath;
+
+        earnedToToken0Path = _earnedToToken0Path;
+        earnedToToken1Path = _earnedToToken1Path;
+
+        // Reverse path
+        for (uint256 i = earnedToToken0Path.length; i > 0; i--) {
+            token0ToEarnedPath.push(earnedToToken0Path[i - 1]);
+        }
+        for (uint256 i = earnedToToken1Path.length; i > 0; i--) {
+            token1ToEarnedPath.push(earnedToToken1Path[i - 1]);
+        }
     }
 }
