@@ -1,26 +1,35 @@
 const hre = require("hardhat");
 const addresses = hre.network.config.constants;
 const inquirer = require('inquirer');
+const constants = require("../../../constants");
 
-exports.processGauge = async function (scriptName, gauge, strategyName, lpToken, chainId, isBluechip, isLP, strategyParams, deployer) {
-    console.log(gauge);
+exports.processGauge = async function (scriptName, mainchainGauge, strategyName, lpToken, isBluechip, strategyParams, deployer) {
+    console.log(mainchainGauge);
 
-    const choices = ["Create-gauge"];
-    if (chainId == 0) {
-        choices.push("Deploy-strategy");
-        choices.push("Verify-strategy");
-        choices.push("Init-strategy");
+    let chainConstants = constants.BSC;
+    if (mainchainGauge.chainId == constants.ARBITRUM.lzChainId) {
+        chainConstants = constants.ARBITRUM;
+    } else if (mainchainGauge.chainId == constants.POLYGON.lzChainId) {
+        chainConstants = constants.POLYGON;
     }
+
+    const lpTicker = Object.keys(chainConstants).find(key => chainConstants[key] === lpToken);
+    console.log(`LP: ${lpToken} (${lpTicker})`);
 
     const answer = await inquirer.prompt([{
         name: "action",
         type: "list",
         message: "Choose an action.",
-        choices: choices
+        choices:[
+          "Create-gauge",
+          "Deploy-strategy",
+          "Verify-strategy",
+          "Init-strategy",
+        ]
     }]);
 
     if (answer.action == "Create-gauge") {
-        await createGauge(scriptName, chainId, lpToken, isBluechip, isLP, deployer);
+        await createGauge(scriptName, mainchainGauge, lpToken, isBluechip, deployer);
 
     } else if (answer.action == "Deploy-strategy") {
         await deployStrategy(strategyName, strategyParams);
@@ -29,11 +38,11 @@ exports.processGauge = async function (scriptName, gauge, strategyName, lpToken,
         console.log("Not supported yet!");
 
     } else if (answer.action == "Init-strategy") {
-        await initStrategy(gauge, deployer);
+        await initStrategy(mainchainGauge, deployer);
     }
 }
 
-createGauge = async function (scriptName, chainId, lpToken, isBluechip, isLP, deployer) {
+createGauge = async function (scriptName, mainchainGauge, lpToken, isBluechip, deployer) {
     const PID = scriptName.split('-')[0];
     let VOTER;
     if (isBluechip) {
@@ -51,17 +60,12 @@ createGauge = async function (scriptName, chainId, lpToken, isBluechip, isLP, de
         console.log(`You're trying to add PID: ${PID}`);
         return;
     }
-    
-    if (isBluechip) {
-        tx = await VOTER.createGauge(lpToken, chainId);
-    } else {
-        tx = await VOTER.createGauge(lpToken, chainId, isLP);
-    }
 
+    tx = await VOTER.createGauge(lpToken, mainchainGauge.gauge);
     await tx.wait();
-    console.log("gauge created");
+    console.log("sideGauge created");
     const gauge = await VOTER.gaugeList(PID);
-    console.log(`gauge address: ${gauge}`);
+    console.log(`sideGauge address: ${gauge}`);
 }
 
 deployStrategy = async function (strategyName, strategyParams) {
@@ -71,9 +75,9 @@ deployStrategy = async function (strategyName, strategyParams) {
     console.log("Strategy deployed to: %saddress/%s", hre.network.config.explorer, STRATEGY.address);
 }
 
-initStrategy = async function (gauge, deployer) {
-    const GAUGE = await hre.ethers.getContractAt('GaugeV2', gauge.gauge, deployer);
-    const tx = await GAUGE.initStrategy(gauge.strategy);
+initStrategy = async function (mainchainGauge, deployer) {
+    const GAUGE = await hre.ethers.getContractAt('GaugeV2', mainchainGauge.sideGauge, deployer);
+    const tx = await GAUGE.initStrategy(mainchainGauge.strategy);
     tx.wait();
     console.log("GAUGE.initStrategy")
 }

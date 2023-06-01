@@ -227,4 +227,29 @@ contract Strategy_Thena is Strategy {
             );
         }
     }
+
+    function updateEarnedRoute(
+        ISolidlyRouter.Routes[] memory _earnedToToken0Route,
+        ISolidlyRouter.Routes[] memory _earnedToToken1Route,
+        ISolidlyRouter.Routes[] memory _token0ToEarnedRoute,
+        ISolidlyRouter.Routes[] memory _token1ToEarnedRoute
+    ) external onlyAllowGov {
+        delete earnedToToken0Route;
+        delete earnedToToken1Route;
+        delete token0ToEarnedRoute;
+        delete token1ToEarnedRoute;
+
+        for (uint i; i < _earnedToToken0Route.length; ++i) {
+            earnedToToken0Route.push(_earnedToToken0Route[i]);
+        }
+        for (uint i; i < _earnedToToken1Route.length; ++i) {
+            earnedToToken1Route.push(_earnedToToken1Route[i]);
+        }
+        for (uint i; i < _token0ToEarnedRoute.length; ++i) {
+            token0ToEarnedRoute.push(_token0ToEarnedRoute[i]);
+        }
+        for (uint i; i < _token1ToEarnedRoute.length; ++i) {
+            token1ToEarnedRoute.push(_token1ToEarnedRoute[i]);
+        }
+    }
 }
