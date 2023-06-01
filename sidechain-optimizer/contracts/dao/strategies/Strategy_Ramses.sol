@@ -5,18 +5,18 @@ pragma solidity 0.8.13;
 import "./Strategy.sol";
 import '../interfaces/ISolidlyRouter.sol';
 
-interface IThenaGauge {
+interface IRamsesGauge {
     function balanceOf(address _address) external view returns (uint256);
-    function deposit(uint256 _amount) external;
+    function deposit(uint256 _amount, uint256 tokenId) external;
     function withdraw(uint256 _amount) external;
-    function getReward() external;
+    function getReward(address account, address[] memory tokens) external;
 }
 
 interface IERC20Extended {
     function decimals() external view returns (uint);
 }
 
-contract Strategy_Thena is Strategy {
+contract Strategy_Ramses is Strategy {
     using SafeERC20 for IERC20;
 
     address public uniProxyAddress;
@@ -36,18 +36,18 @@ contract Strategy_Thena is Strategy {
         ISolidlyRouter.Routes[] memory _earnedToToken1Route,
         ISolidlyRouter.Routes[] memory _token0ToEarnedRoute,
         ISolidlyRouter.Routes[] memory _token1ToEarnedRoute,
-        uint256 _withdrawFeeFactor
+        uint256 _withdrawFeeFactor,
+        address _voterFeeAddress
     ) {
         vault = _addresses[0];
         farmContractAddress = _addresses[1];
         govAddress = _addresses[2];
         uniRouterAddress = _addresses[3];
 
-        wftmAddress = _tokenAddresses[0];
-        wantAddress = _tokenAddresses[1];
-        earnedAddress = _tokenAddresses[2];
-        token0Address = _tokenAddresses[3];
-        token1Address = _tokenAddresses[4];
+        wantAddress = _tokenAddresses[0];
+        earnedAddress = _tokenAddresses[1];
+        token0Address = _tokenAddresses[2];
+        token1Address = _tokenAddresses[3];
 
         isSingleVault = false;
         isAutoComp = _isAutoComp;
@@ -67,11 +67,12 @@ contract Strategy_Thena is Strategy {
         }
 
         withdrawFeeFactor = _withdrawFeeFactor;
+        voterFeeAddress = _voterFeeAddress;
     }
 
     function balanceOfStakedWant() public view override returns (uint256) {
         if (farmContractAddress != address(0)) {
-            return IThenaGauge(farmContractAddress).balanceOf(address(this));
+            return IRamsesGauge(farmContractAddress).balanceOf(address(this));
         } else {
             return 0;
         }
@@ -82,15 +83,15 @@ contract Strategy_Thena is Strategy {
         uint256 wantAmt = IERC20(wantAddress).balanceOf(address(this));
         IERC20(wantAddress).safeIncreaseAllowance(farmContractAddress, wantAmt);
 
-        IThenaGauge(farmContractAddress).deposit(wantAmt);
+        IRamsesGauge(farmContractAddress).deposit(wantAmt, 0);
     }
 
     function _unfarm(uint256 _wantAmt) internal override {
-        IThenaGauge(farmContractAddress).withdraw(_wantAmt);
+        IRamsesGauge(farmContractAddress).withdraw(_wantAmt);
     }
 
     function _harvest() internal override {
-        IThenaGauge(farmContractAddress).getReward();
+        IRamsesGauge(farmContractAddress).getReward(address(this), new address[](0));
     }
 
     // 1. Harvest farm tokens

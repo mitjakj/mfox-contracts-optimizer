@@ -51,12 +51,13 @@ createGauge = async function (scriptName, chainId, lpToken, isBluechip, isLP, de
         console.log(`You're trying to add PID: ${PID}`);
         return;
     }
-
+    
     if (isBluechip) {
         tx = await VOTER.createGauge(lpToken, chainId);
     } else {
         tx = await VOTER.createGauge(lpToken, chainId, isLP);
     }
+
     await tx.wait();
     console.log("gauge created");
     const gauge = await VOTER.gaugeList(PID);
