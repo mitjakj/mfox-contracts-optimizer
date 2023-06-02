@@ -26,8 +26,8 @@ module.exports = {
     lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
 
     /* UpgradableContracts admin */
-    timelocker: '',
-    proxyAdmin: '',
+    timelocker: '0x56c11006Fce73A07A39C06ef6Efa0bc226035fD6',
+    proxyAdmin: '0xd614F630F18602dDd08b41728058E94427475cd5',
 
     /* general */
     wbnb: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
@@ -107,8 +107,8 @@ module.exports = {
     lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
 
     /* UpgradableContracts admin */
-    timelocker: '',
-    proxyAdmin: '',
+    timelocker: '0x4F9DB343b8b1091C19DF71472E335B22aADFA0cF',
+    proxyAdmin: '0x2e3C958784f0caD0DA7DB3FfdB73c80aa9d8e034',
 
     /* LPs */
     magicfoxLP_FOX_ETH: '0x00F881319aDc53a624B010132fbb708F03bEcc3C',
@@ -156,8 +156,8 @@ module.exports = {
     lzEndpoint: '0x3c2269811836af69497E5F486A85D7316753cf62',
 
     /* UpgradableContracts admin */
-    timelocker: '',
-    proxyAdmin: '',
+    timelocker: '0xe6929972bFae2B5dd951573c92df78963236Ae40',
+    proxyAdmin: '0x7cD9eCF74C0C17f49175bC37A0ac3cBA245C0644',
 
     /* LPs */
     magicfoxLP_FOX_MATIC: '0xbC90764eBF7C77984786DB1Eea0ce95ccE5B0978',
