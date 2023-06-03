@@ -96,6 +96,12 @@ module.exports = {
       strategy: '0x85A65DdC590b57A553CdB03638C987D6E2AeC5cc',
       allocPts: 100,
     },
+    pool10: {
+      // pcs syrup CSIX
+      gauge: '',
+      strategy: '',
+      allocPts: 100,
+    },
   },
 
 };
