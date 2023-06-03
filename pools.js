@@ -111,7 +111,26 @@ module.exports = {
       gauge: '0x4A6f64119e7B71ABBa4731fcAc024B1307673272',
       strategy: '0x67F091C45B1DbDa4Da160735e1CdD2481821D1E1',
     },
-
+    pool19: {
+      // pcs-cake-syrup-csix
+      gauge: '0x2ED78BB80D738a5C39A26BA7831D47275065b52f',
+      strategy: '0x7A367986f2146e6295E52e321dd973E4447bb2FE',
+    },
+    pool20: {
+      // pcsLP-LTC-BNB
+      gauge: '0x3EdA393C0f8120380cC810eeADAd0248412058DE',
+      strategy: '0x830ce165C0d71a0f10B18d579D1a4Cf2a687FF8a',
+    },
+    pool21: {
+      // pcsLP-XVS-BNB
+      gauge: '0xAe28CB1B7150b53541C7b937f02D81b350229a63',
+      strategy: '0x60aF05Ad4a42d30cBFcd7fA21138434E823514cF',
+    },
+    pool22: {
+      // pcsLP-TWT-BNB
+      gauge: '0x490CbA846b6D18AB00C0058BE1FEEf7DFD5FD090',
+      strategy: '0x510D7e7c280f9D89b5a632450e87C843E0286B78',
+    },
 
     // poolxxx: {
     //   // ARBITRUM USDC
