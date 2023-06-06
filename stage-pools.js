@@ -28,6 +28,11 @@ module.exports = {
       gauge: '0x2ebf315d92FE35D657e5362a50A5ff8EdF8f5a88',
       strategy: '0xbC1eC6e545f5df5CD7C405d675039408b29C786D',
     },
+    pool4: {
+      // ample_wbnb
+      gauge: '',
+      strategy: '',
+    },
   },
 
   /**

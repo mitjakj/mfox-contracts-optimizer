@@ -91,7 +91,9 @@ contract Strategy_Ramses is Strategy {
     }
 
     function _harvest() internal override {
-        IRamsesGauge(farmContractAddress).getReward(address(this), new address[](0));
+        address[] memory _rewardTokens = new address[](1);
+        _rewardTokens[0] = earnedAddress;
+        IRamsesGauge(farmContractAddress).getReward(address(this), _rewardTokens);
     }
 
     // 1. Harvest farm tokens
