@@ -131,6 +131,44 @@ module.exports = {
       gauge: '0x490CbA846b6D18AB00C0058BE1FEEf7DFD5FD090',
       strategy: '0x510D7e7c280f9D89b5a632450e87C843E0286B78',
     },
+    pool23: {
+      // ampleLP_AMPLE_BNB
+      gauge: '0x722D6bb7855BA231D06D6F6190EbD19429014a4b',
+      strategy: '0x07E144c87349F30e73AEECb416358e6C72F34a1D',
+    },
+    pool24: {
+      // ample
+      gauge: '0xcd3efEE15E92B2e7B75a4802865A844C369EfD28',
+      strategy: '0x19F38fcfA31c1985b8FB5fb086c2e9B312990979',
+    },
+    pool25: {
+      // ARBITRUM solizardLP_vAMM_SLIZ_WETH
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0xbF335abA5476F3c86436afb53062851151F207F0',
+      sideGauge: '0x6f41e232708Ec2d40A62F5B1e1929Dc4186F3ADf',
+      strategy: '0x394bD137c5796a10BbF236bF2b9ed0bc3CA34f48',
+    },
+    pool26: {
+      // ARBITRUM solizardLP_sAMM_nfUSDchr_USDC -- !!! DEPRECATED !!!
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0x017611c8fB276422b38A587a3aa8e4502eA395aE',
+      sideGauge: '0x01E308AE47b14dAa085FC758e14Cb07c7CDDDdD3',
+      strategy: '0x03fcD3B84Aa33F6725D2E0Af19E14aA80AC8667d',
+    },
+    pool27: {
+      // ARBITRUM soluneaLP_vAMM_SLNA_WETH
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0x3125369706dd0fe682e1f56f9366402D75dcE93c',
+      sideGauge: '0x54d468C5754Cf25edF9908BB5d94B46207DDC346',
+      strategy: '0xDa6188fBf5f1fBa231B2Be5e210fAEBA3a03C9f2',
+    },
+    pool28: {
+      // ARBITRUM soluneaLP_vAMM_WETH_ARB
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0x7D8Bc4ed64681CC35705F0bB44653F4767420975',
+      sideGauge: '0x158B2Cd4ec99Ac91A7D0239E55A3A93E043609F8',
+      strategy: '0x501a5919A38C0E9c582049a0e4D7Baa7f9eb53A6',
+    },
 
     // poolxxx: {
     //   // ARBITRUM USDC
