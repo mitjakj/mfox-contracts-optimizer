@@ -16,7 +16,7 @@ async function main() {
     // Set constants [START]
 
     const CHAIN_ID = hre.network.config.constants.lzChainId
-    const LP_TOKEN = addresses.ramsesLP_v_weth_usdc;
+    const LP_TOKEN = addresses.chronosLP_sAMM_DOLA_USDC;
     const IS_LP = true;
 
     const IS_BLUECHIP = folder == 'bluechip'; // This constant should not be changed !!!
@@ -25,26 +25,26 @@ async function main() {
     const GAUGE_ADDRESS = GAUGE.gauge; // This constant should not be changed !!!
 
     // Strategy parameters
-    const STRATEGY_NAME = "Strategy_Ramses";
+    const STRATEGY_NAME = "Strategy_Chronos";
     const strategyParams = [
         [
             GAUGE_ADDRESS,
-            addresses.ramsesGauge_v_weth_usdc,
+            addresses.chronosLP_sAMM_DOLA_USDC_GAUGE,
             deployer.address,
-            addresses.ramsesRouter
+            addresses.chronosRouter
         ],
         [
             LP_TOKEN,       // wantAddress
-            addresses.ram,  // earnedAddress
-            addresses.weth, // token0Address
+            addresses.chr,  // earnedAddress
+            addresses.dola, // token0Address
             addresses.usdc  // token1Address
         ],
         true, // isAutoComp
-        false, // isStable
-        [{from: addresses.ram, to: addresses.weth, stable: false}],  // earnedToToken0Path
-        [{from: addresses.ram, to: addresses.weth, stable: false}, {from: addresses.weth, to: addresses.usdc, stable: false}],  // earnedToToken1Path
-        [{from: addresses.weth, to: addresses.ram, stable: false}],  // token0ToEarnedPath
-        [{from: addresses.usdc, to: addresses.ram, stable: false}],  // token1ToEarnedPath
+        true, // isStable
+        [{from: addresses.chr, to: addresses.usdc, stable: false},{from: addresses.usdc, to: addresses.dola, stable: true}],  // earnedToToken0Path
+        [{from: addresses.chr, to: addresses.usdc, stable: false}],  // earnedToToken1Path
+        [{from: addresses.dola, to: addresses.usdc, stable: true},{from: addresses.usdc, to: addresses.chr, stable: false}],  // token0ToEarnedPath
+        [{from: addresses.usdc, to: addresses.chr, stable: false}],  // token1ToEarnedPath
         10000
     ]
     // console.log(strategyParams);

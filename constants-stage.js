@@ -62,8 +62,12 @@ module.exports = {
     weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
     usdt: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
     usdc: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+    dola: '0x6A7661795C374c0bFC635934efAddFf3A7Ee23b6',
+    chr: '0x15b2fb8f08E4Ac1Ce019EADAe02eE92AeDF06851',
 
     /* LPs */
+    chronosLP_sAMM_DOLA_USDC: '0x7D6DB47d1c68f89fDa2BD9385cfF8c78e2F2dD07',
+    chronosLP_sAMM_DOLA_USDC_GAUGE: '0x5515f3f87eca062f0ea84f29b273c3f37ec78af5',
 
     /* swap */
 
@@ -86,7 +90,10 @@ module.exports = {
 
     /* UpgradableContracts admin */
     timelocker: '',
-    proxyAdmin: ''
+    proxyAdmin: '',
+
+    /* Chronos */
+    chronosRouter: '0xe708aa9e887980750c040a6a2cb901c37aa34f3b'
   },
 
   POLYGON: {
