@@ -169,6 +169,86 @@ module.exports = {
       sideGauge: '0x158B2Cd4ec99Ac91A7D0239E55A3A93E043609F8',
       strategy: '0x501a5919A38C0E9c582049a0e4D7Baa7f9eb53A6',
     },
+    pool29: {
+      // biswapLP_BSW_BNB
+      gauge: '0xf134D293633C5dB224B7BA0e67499Eb3961D81Bc',
+      strategy: '0xd4deB9BFdD151AA255f2c90208eEf5A45D9CEBF0',
+    },
+    pool30: {
+      // biswapLP_XRP_BNB
+      gauge: '0xCA36855E13f8BB6B1978694fD2B353F4011A7318',
+      strategy: '0x64C73EE2A1c8ef75d9B2d71d49f62b3faC9B2689',
+    },
+    pool31: {
+      // biswapLP_ADA_BNB
+      gauge: '0x969ec931CdDb9b9f9dbb9e891E6A8671A5BC8d63',
+      strategy: '0xBd22B2C0A073021BE39De58271Fc0fc6fF6FADb2',
+    },
+    pool32: {
+      // biswapLP_BNB_LINK
+      gauge: '0x6B45b6251fF45a4BbaC9D7ee09191bF07b24EA08',
+      strategy: '0x9eD98dc9a0225A31A3D0aE2236Ba094b521F7250',
+    },
+    pool33: {
+      // thenaLP_vAMM_fBOMB_WBNB
+      gauge: '0x0F5ae657Ad779A52c1184fE0C7124F03a94D357a',
+      strategy: '0x35d347C6608aECF50bc0A57a8d930a4e1FdDdc61',
+    },
+    pool34: {
+      // pcsLP_PEPRO_BNB
+      gauge: '0x2e14CDfD56384BCe342a92bb4be78B392bD85BA0',
+      strategy: '0x6709dB2e9AD575d9e96c12BDB769b85953487045',
+    },
+    pool35: {
+      // pcsLP_HK_BNB
+      gauge: '0x0D78073D3B247d490C99233819b2221A25fAe89B',
+      strategy: '0x2514E40F89944DF8075F93F6D7Cfd195dE4b26A9',
+    },
+    pool36: {
+      // pcsLP_PWAGMI_BNB
+      gauge: '0x92576eAd24E7F86691393aC38fA058aAdec9eE7c',
+      strategy: '0x5ae225D16D75b055Df001993f912F1C2cf97585E',
+    },
+    pool37: {
+      // pcsLP_PEPET_BNB
+      gauge: '0xdC1df5E5F1B039Be590438b6d8171eE6f412Eb91',
+      strategy: '0xa99598aE8c746c97d2250C16f8Fd788545D29251',
+    },
+    pool38: {
+      // thenaLP_vAMM_USDT_FEAR
+      gauge: '0xD18Cc29C3A068D112aFAdD5b34CA291eB7cf72ba',
+      strategy: '0xA6A9690895917f8431F419Fc3aDe891B467C7e55',
+    },
+    pool39: {
+      // thenaLP_sAMM_MAI_FRAX
+      gauge: '0xd1a1fc918Ad1bbCD037Aa5b4a3B657cfDbCbe667',
+      strategy: '0xB452715139248efCd593b27955C535aeC9729D1e',
+    },
+    pool40: {
+      // thenaLP_vAMM_XCAD_BUSD
+      gauge: '0x260e26e1a0B6d0569d07fB0b47f23bc96A881c01',
+      strategy: '0xD08f5DD3a4630098f739a350d6B3eA322Cc512B7',
+    },
+    pool41: {
+      // thenaLP_sAMM_DOLA_CUSD
+      gauge: '0x0C525B5408Ef5312851D2E3E34A4165d17982176',
+      strategy: '0xafA86E8a7De07109De3c88119b042929bF922C01',
+    },
+    pool42: {
+      // thenaLP_sAMM_ETH_frxETH
+      gauge: '0xC62115039D1fa6beB9100b130412Ccff0d73C63c',
+      strategy: '0x57bBe6c361B55F8418a1049679DE699b870594Fb',
+    },
+    pool43: {
+      // thenaLP_vAMM_WBNB_BIFI
+      gauge: '0x08C9EDabF52fE0cBE6A54f9F71143272B1260233',
+      strategy: '0x2154590d8e7EDCEC14547e869B7deF1595Ee0259',
+    },
+    pool44: {
+      // thenaGammaLP_aWBNB_THE
+      gauge: '0x768fA1bb0d5FEAce5FB4c07Ef1B5be9E2b3F8e39',
+      strategy: '0x354a9cc17afC459997c1f31d81f7712cC7Db7733',
+    },
 
     // poolxxx: {
     //   // ARBITRUM USDC
@@ -195,7 +275,7 @@ module.exports = {
       gauge: '0x9DFe34b1265e91615030a3B61C42503d9a396473',
       sideGauge: '0x87C616fF929F0A9C9188FA4B24F10329eB5Ffd7E',
       strategy: '0x05841993decca09D51A979768459608f3920fa13',
-      allocPts: 240,
+      allocPts: 0,
     },
     pool2: {
       // ARBITRUM magicfoxLP_SHROOM_ETH
@@ -203,13 +283,13 @@ module.exports = {
       gauge: '0x9407f326302487Cc71595fd884Bd564241264ED1',
       sideGauge: '0xA5442c626ae0327eA266e194331a3C0E94a6E841',
       strategy: '0xf2668bE902AF4023f019c84ea9De23634A057B8D',
-      allocPts: 240,
+      allocPts: 0,
     },
     pool3: {
       // biswapLP_DOGE_BNB
       gauge: '0x222E96F1cf6872464335e8ea2D1474Aa0eD1779B',
       strategy: '0xBA56fab7AA79342752198338b24fa58f7E8f9980',
-      allocPts: 40,
+      allocPts: 20,
     },
     pool4: {
       // POLYGON magicfoxLP_FOX_MATIC
@@ -217,7 +297,7 @@ module.exports = {
       gauge: '0x0947a4291C1aB3Da96Dc074393B58a804e5a61cE',
       sideGauge: '0x35935336cC5F663cc30B6F35202d00Db58d36b32',
       strategy: '0x05841993decca09D51A979768459608f3920fa13',
-      allocPts: 240,
+      allocPts: 0,
     },
     pool5: {
       // POLYGON magicfoxLP_SHROOM_MATIC
@@ -225,7 +305,21 @@ module.exports = {
       gauge: '0x3a6af8d736277F37Ecf64Bc44854AF70C92c3D36',
       sideGauge: '0x6974e75846875d8Dd9b4661F589b91791484A3A9',
       strategy: '0xf2668bE902AF4023f019c84ea9De23634A057B8D',
-      allocPts: 240,
+      allocPts: 0,
+    },
+    pool6: {
+      // magicfoxLP_SHROOM_WBNB
+      gauge: '0x36A2a8B33e25Fcb8BaF98A72656162C160805982',
+      strategy: '0xE37192a4AfB7F220A25ed89448CD70aF42103CC7',
+      allocPts: 900,
+    },
+    pool7: {
+      // ARBITRUM magicfoxLP_sAMM_wstETH_WETH
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0xaa3d6861aC71B3B5165cAdb2f0cFF8DC0FbAa43F',
+      sideGauge: '0x78535e9211B1EF688FD3664b8A9Fb26d5dC7E64D',
+      strategy: '0xa8446B759f9B4312dfa924C02c508a3b7330D302',
+      allocPts: 80,
     },
   },
 
