@@ -29,7 +29,7 @@ async function main() {
     const strategyParams = [
         [
             GAUGE_ADDRESS,
-            addresses.thenaGammaLP_HAY_USDT_GAUGE,
+            addresses.thenaGammaLP_HAY_USDT_GAUGE, // LP GAUGE
             deployer.address,
             addresses.thenaSwapRouter,
             addresses.thenaUniProxy,

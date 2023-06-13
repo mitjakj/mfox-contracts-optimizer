@@ -27,7 +27,7 @@ exports.processGauge = async function (scriptName, mainchainGauge, strategyName,
           "Init-strategy",
         ]
     }]);
-
+    
     if (answer.action == "Create-gauge") {
         await createGauge(scriptName, mainchainGauge, lpToken, isBluechip, deployer);
 

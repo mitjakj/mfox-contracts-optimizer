@@ -249,6 +249,44 @@ module.exports = {
       gauge: '0x768fA1bb0d5FEAce5FB4c07Ef1B5be9E2b3F8e39',
       strategy: '0x354a9cc17afC459997c1f31d81f7712cC7Db7733',
     },
+    pool45: {
+      // ARBITRUM ramsesLP_ETH_RAM
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0xF15c7F32a815C9698BD1c04ED1Abf295D141A70d',
+      sideGauge: '0xd88043d2b9Ee6B1073cCbf72dC6aeFc6741607a0',
+      strategy: '0xdc75e9Be94950acb5fea2216D616c525E86e054E',
+    },
+    pool46: {
+      // pcsLP_CAKE_BNB
+      gauge: '0xfF269A44D7eD7a27067017faD723BC7a768D66a8',
+      strategy: '0x0BB99eD12D533D0093c14895865eD77063Bc3171',
+    },
+    pool47: {
+      // ARBITRUM solizardLP_sAMM_nfUSDchr_USDC
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0xC2b4b9e20D08de951BfeCCD272fB63584A7a0312',
+      sideGauge: '0x2Ce02fdB03EF85045D7D205E7876d42D15A9eba8',
+      strategy: '0x1cb3EA512bF6EA8672C7385dc66Be007654FA683',
+    },
+    pool48: {
+      // babyswap_BABY
+      gauge: '0x2f4c5725e08cCDCd576d394c214dFAB8ec5dD628',
+      strategy: '0xFAa01F2a5f517Ed0512aD82b970549ff4d4D4078',
+    },
+    pool49: {
+      // ARBITRUM arxLP_ARX_WETH
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0x6D5DBAdBdeA0387A3891D5e47af4dFeEDAf7651D',
+      sideGauge: '0x61648Fe18cEA28E0d0A03Be0feb5248FC5Db97C1',
+      strategy: '0x679b407237302fba501Dd304EA4509BA606f5f6A',
+    },
+    pool50: {
+      // ARBITRUM arxLP_ARX_USDC
+      chainId: constants.ARBITRUM.lzChainId,
+      gauge: '0xCA1eC32690c796964d43dF3eE64D8DbF42FEaf26',
+      sideGauge: '0x32D3705950BC4f41B7b4fD878AFE6929738e7B1b',
+      strategy: '0x57da5186332f9a26758bd278248cdcAbc7Fc2f72',
+    },
 
     // poolxxx: {
     //   // ARBITRUM USDC

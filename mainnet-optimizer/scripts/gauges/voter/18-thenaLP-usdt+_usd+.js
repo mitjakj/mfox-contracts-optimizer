@@ -8,92 +8,68 @@ const scriptName = path.basename(__filename);
 const pathAr = __filename.split('/');
 const folder = pathAr[pathAr.length - 2];
 
-// async function main() {
-//     const deployer = (await hre.ethers.getSigners())[0]; 
+async function main() {
+    const deployer = (await hre.ethers.getSigners())[0]; 
 
-//     // Set constants [START]
-//     // Set constants [START]
-//     // Set constants [START]
+    // Set constants [START]
+    // Set constants [START]
+    // Set constants [START]
 
-//     const CHAIN_ID = 0; // 0 for BSC, otherwise set it to constants.{CHAIN}.lzChainId
-//     const LP_TOKEN = addresses['thenaLP_USDT+_USD+'];
-//     const IS_LP = true;
+    const CHAIN_ID = 0; // 0 for BSC, otherwise set it to constants.{CHAIN}.lzChainId
+    const LP_TOKEN = addresses['thenaLP_USDT+_USD+'];
+    const IS_LP = true;
 
-//     const IS_BLUECHIP = folder == 'bluechip'; // This constant should not be changed !!!
-//     const PID = scriptName.split('-')[0]; // This constant should not be changed !!!
-//     const GAUGE = pools[IS_BLUECHIP ? 'BSC_BLUECHIP' : 'BSC_VOTER'][`pool${PID}`]; // This constant should not be changed !!!
-//     const GAUGE_ADDRESS = GAUGE.gauge; // This constant should not be changed !!!
+    const IS_BLUECHIP = folder == 'bluechip'; // This constant should not be changed !!!
+    const PID = scriptName.split('-')[0]; // This constant should not be changed !!!
+    const GAUGE = pools[IS_BLUECHIP ? 'BSC_BLUECHIP' : 'BSC_VOTER'][`pool${PID}`]; // This constant should not be changed !!!
+    const GAUGE_ADDRESS = GAUGE.gauge; // This constant should not be changed !!!
     
-//     // Strategy parameters
-//     const STRATEGY_NAME = "Strategy_Thena";
-//     const strategyParams = [
-//         [
-//             GAUGE_ADDRESS,
-//             addresses['thenaLP_USDT+_USD+_GAUGE'],
-//             deployer.address,
-//             addresses.thenaRouterV2
-//         ],
-//         [
-//             addresses.wbnb, // wbnb
-//             LP_TOKEN,       // wantAddress
-//             addresses.the,  // earnedAddress
-//             addresses['usdt+'], // token0Address
-//             addresses['usd+']  // token1Address
-//         ],
-//         true, // isAutoComp
-//         true, // isStable
+    // Strategy parameters
+    const STRATEGY_NAME = "Strategy_Thena";
+    const strategyParams = [
+        [
+            GAUGE_ADDRESS,
+            addresses['thenaLP_USDT+_USD+_GAUGE'],
+            deployer.address,
+            addresses.thenaRouterV2
+        ],
+        [
+            addresses.wbnb, // wbnb
+            LP_TOKEN,       // wantAddress
+            addresses.the,  // earnedAddress
+            addresses['usdt+'], // token0Address
+            addresses['usd+']  // token1Address
+        ],
+        true, // isAutoComp
+        true, // isStable
 
-//         [{from: addresses.the, to: addresses.usdt, stable: false}, {from: addresses.usdt, to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses['usd+'], stable: true}, {from: addresses['usd+'], to: addresses['usdt+'], stable: true}],  // earnedToToken0Path
-//         [{from: addresses.the, to: addresses.usdt, stable: false}, {from: addresses.usdt, to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses['usd+'], stable: true}],  // earnedToToken1Path
-//         [{from: addresses['usdt+'], to: addresses['usd+'], stable: true}, {from: addresses['usd+'], to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses.usdt, stable: true}, {from: addresses.usdt, to: addresses.the, stable: false}],  // token0ToEarnedPath
-//         [{from: addresses['usd+'], to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses.usdt, stable: true}, {from: addresses.usdt, to: addresses.the, stable: false}],  // token1ToEarnedPath
-//         9990
-//     ]
-//     // console.log(strategyParams);
-//     // Set constants [END]
-//     // Set constants [END]
-//     // Set constants [END]
+        [{from: addresses.the, to: addresses.usdt, stable: false}, {from: addresses.usdt, to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses['usd+'], stable: true}, {from: addresses['usd+'], to: addresses['usdt+'], stable: true}],  // earnedToToken0Path
+        [{from: addresses.the, to: addresses.usdt, stable: false}, {from: addresses.usdt, to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses['usd+'], stable: true}],  // earnedToToken1Path
+        [{from: addresses['usdt+'], to: addresses['usd+'], stable: true}, {from: addresses['usd+'], to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses.usdt, stable: true}, {from: addresses.usdt, to: addresses.the, stable: false}],  // token0ToEarnedPath
+        [{from: addresses['usd+'], to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses.usdt, stable: true}, {from: addresses.usdt, to: addresses.the, stable: false}],  // token1ToEarnedPath
+        9990
+    ]
+    // console.log(strategyParams);
+    // Set constants [END]
+    // Set constants [END]
+    // Set constants [END]
 
-//     await common.processGauge(
-//         scriptName,
-//         GAUGE,
-//         STRATEGY_NAME,
-//         LP_TOKEN,
-//         CHAIN_ID,
-//         IS_BLUECHIP,
-//         IS_LP,
-//         strategyParams,
-//         deployer
-//     );
-// }
+    await common.processGauge(
+        scriptName,
+        GAUGE,
+        STRATEGY_NAME,
+        LP_TOKEN,
+        CHAIN_ID,
+        IS_BLUECHIP,
+        IS_LP,
+        strategyParams,
+        deployer
+    );
+}
 
-// main()
-//     .then(() => process.exit(0))
-//     .catch(error => {
-//         console.error(error);
-//         process.exit(1);
-//     });
-
-module.exports = [
-    [
-        '0x4A6f64119e7B71ABBa4731fcAc024B1307673272',
-        addresses['thenaLP_USDT+_USD+_GAUGE'],
-        '0x30D8ffA39cf00c5BC3441584b794cd837DF1457D',
-        addresses.thenaRouterV2
-    ],
-    [
-        addresses.wbnb, // wbnb
-        '0x1561D9618dB2Dcfe954f5D51f4381fa99C8E5689',       // wantAddress
-        addresses.the,  // earnedAddress
-        addresses['usdt+'], // token0Address
-        addresses['usd+']  // token1Address
-    ],
-    true, // isAutoComp
-    true, // isStable
-
-    [{from: addresses.the, to: addresses.usdt, stable: false}, {from: addresses.usdt, to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses['usd+'], stable: true}, {from: addresses['usd+'], to: addresses['usdt+'], stable: true}],  // earnedToToken0Path
-    [{from: addresses.the, to: addresses.usdt, stable: false}, {from: addresses.usdt, to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses['usd+'], stable: true}],  // earnedToToken1Path
-    [{from: addresses['usdt+'], to: addresses['usd+'], stable: true}, {from: addresses['usd+'], to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses.usdt, stable: true}, {from: addresses.usdt, to: addresses.the, stable: false}],  // token0ToEarnedPath
-    [{from: addresses['usd+'], to: addresses.hay, stable: true}, {from: addresses.hay, to: addresses.usdt, stable: true}, {from: addresses.usdt, to: addresses.the, stable: false}],  // token1ToEarnedPath
-    9990
-]
+main()
+    .then(() => process.exit(0))
+    .catch(error => {
+        console.error(error);
+        process.exit(1);
+    });

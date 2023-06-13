@@ -1,4 +1,5 @@
 const hre = require("hardhat");
+const utils = require('ethers').utils;
 const pools = require("../../../../pools.js");
 const common = require("../common.js");
 const addresses = hre.network.config.constants;
@@ -13,50 +14,49 @@ async function main() {
     // Set constants [START]
     // Set constants [START]
     // Set constants [START]
-    const CHAIN_ID = 0; // 0 for BSC, otherwise set it to constants.{CHAIN}.lzChainId
-    const LP_TOKEN = addresses.ampleLP_AMPLE_BNB;
-    const IS_LP = false; // set to true if you want ample & wbnb as bribe tokens by default
-
     const IS_BLUECHIP = folder == 'bluechip'; // This constant should not be changed !!!
-    const PID = scriptName.split('-')[0]; // This constant should not be changed !!!
-    const GAUGE = pools[IS_BLUECHIP ? 'BSC_BLUECHIP' : 'BSC_VOTER'][`pool${PID}`]; // This constant should not be changed !!!
-    const GAUGE_ADDRESS = GAUGE.gauge; // This constant should not be changed !!!
+
+    const MAINCHAIN_GAUGE = pools[IS_BLUECHIP ? 'BSC_BLUECHIP' : 'BSC_VOTER'].pool45;
+    const LP_TOKEN = addresses.ramsesLP_ETH_RAM;
+
+    const GAUGE_ADDRESS = MAINCHAIN_GAUGE.sideGauge; // This constant should not be changed !!!
 
     // Strategy parameters
-    const STRATEGY_NAME = "Strategy_Biswap";
+    const STRATEGY_NAME = "Strategy_Ramses";
     const strategyParams = [
         [
             GAUGE_ADDRESS,
-            addresses.ampleFarm, // farm
+            addresses.ramsesLP_ETH_RAM_GAUGE,
             deployer.address,
-            addresses.ampleRouter, // router
+            addresses.ramsesRouter
         ],
         [
-            addresses.wbnb, // wbnb
             LP_TOKEN,       // wantAddress
-            addresses.ample,  // earnedAddress
-            addresses.ample, // token0Address
-            addresses.wbnb  // token1Address
+            addresses.ram,  // earnedAddress
+            addresses.weth, // token0Address
+            addresses.ram  // token1Address
         ],
-        false, // This constant should not be changed !!!
-        true, // This constant should not be changed !!!
-        1, // pid
-        [],  // earnedToToken0Path
-        [addresses.ample, addresses.wbnb], // earnedToToken1Path
-        9990 // withdrawFee
+        true, // isAutoComp
+        false, // isStable
+        // RAM (v) ETH
+        [{from: addresses.ram, to: addresses.weth, stable: false}],  // earnedToToken0Path
+        [],  // earnedToToken1Path
+        [{from: addresses.weth, to: addresses.ram, stable: false}],  // token0ToEarnedPath
+        [],  // token1ToEarnedPath
+        9990,
+        addresses.bluechipFeeCollector
     ]
+    // console.log(strategyParams);
     // Set constants [END]
     // Set constants [END]
     // Set constants [END]
 
     await common.processGauge(
         scriptName,
-        GAUGE,
+        MAINCHAIN_GAUGE,
         STRATEGY_NAME,
         LP_TOKEN,
-        CHAIN_ID,
         IS_BLUECHIP,
-        IS_LP,
         strategyParams,
         deployer
     );

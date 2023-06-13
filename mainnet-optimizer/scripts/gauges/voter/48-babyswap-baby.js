@@ -14,8 +14,8 @@ async function main() {
     // Set constants [START]
     // Set constants [START]
     const CHAIN_ID = 0; // 0 for BSC, otherwise set it to constants.{CHAIN}.lzChainId
-    const LP_TOKEN = addresses.ampleLP_AMPLE_BNB;
-    const IS_LP = false; // set to true if you want ample & wbnb as bribe tokens by default
+    const LP_TOKEN = addresses.baby;
+    const IS_LP = false;
 
     const IS_BLUECHIP = folder == 'bluechip'; // This constant should not be changed !!!
     const PID = scriptName.split('-')[0]; // This constant should not be changed !!!
@@ -23,27 +23,25 @@ async function main() {
     const GAUGE_ADDRESS = GAUGE.gauge; // This constant should not be changed !!!
 
     // Strategy parameters
-    const STRATEGY_NAME = "Strategy_Biswap";
+    const STRATEGY_NAME = "Strategy_EnterStake_V2";
     const strategyParams = [
         [
             GAUGE_ADDRESS,
-            addresses.ampleFarm, // farm
+            addresses.babyswapFarm,
             deployer.address,
-            addresses.ampleRouter, // router
+            addresses.babyswapRouter,
         ],
         [
             addresses.wbnb, // wbnb
             LP_TOKEN,       // wantAddress
-            addresses.ample,  // earnedAddress
-            addresses.ample, // token0Address
-            addresses.wbnb  // token1Address
+            addresses.baby,  // earnedAddress
+            addresses.baby, // token0Address
+            ethers.constants.AddressZero  // token1Address
         ],
-        false, // This constant should not be changed !!!
-        true, // This constant should not be changed !!!
-        1, // pid
-        [],  // earnedToToken0Path
-        [addresses.ample, addresses.wbnb], // earnedToToken1Path
-        9990 // withdrawFee
+        true,
+        true,
+        0,
+        9990
     ]
     // Set constants [END]
     // Set constants [END]
