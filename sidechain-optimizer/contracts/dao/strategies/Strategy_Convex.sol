@@ -172,24 +172,13 @@ contract Strategy_Convex is Strategy {
         uint256 depositNativeAmount;
         uint256 nativeBal = IERC20(native).balanceOf(address(this));
         if (token0Address != native) {
-            //if (nativeToDepositPath.length > 0) {
-                IERC20(native).approve(uniRouterAddress, 0);
-                IERC20(native).approve(uniRouterAddress, type(uint).max);
+            IERC20(native).approve(uniRouterAddress, 0);
+            IERC20(native).approve(uniRouterAddress, type(uint).max);
 
-                UniV3Actions.swapV3WithDeadline(uniRouterAddress, nativeToDepositPath, nativeBal);
-            // } else {
-            //     IUniswapRouterETH(unirouter).swapExactTokensForTokens(nativeBal, 0, nativeToDepositRoute, address(this), block.timestamp);
-            // }
+            UniV3Actions.swapV3WithDeadline(uniRouterAddress, nativeToDepositPath, nativeBal);
+
             depositBal = IERC20(token0Address).balanceOf(address(this));
         } 
-        
-        // else {
-        //     depositBal = nativeBal;
-        //     if (depositNative) {
-        //         depositNativeAmount = nativeBal;
-        //         IWrappedNative(native).withdraw(depositNativeAmount);
-        //     }
-        // }
 
         IERC20(token0Address).approve(pool, 0);
         IERC20(token0Address).approve(pool, depositBal);
