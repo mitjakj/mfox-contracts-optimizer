@@ -45,7 +45,7 @@ async function main() {
         true, // isStable
         utils.solidityPack(["address", "address", "address"], [addresses.the, addresses.wbnb, addresses.weth]),  // earnedToToken0Path
         utils.solidityPack(["address", "address"], [addresses.the, addresses.wbnb]),  // earnedToToken1Path
-        utils.solidityPack(["address", "address", "address"], [addresses.weth, addresses.usdt, addresses.the]),  // token0ToEarnedPath
+        utils.solidityPack(["address", "address", "address"], [addresses.weth, addresses.wbnb, addresses.the]),  // token0ToEarnedPath
         utils.solidityPack(["address", "address"], [addresses.wbnb, addresses.the]),  // token1ToEarnedPath
         9990
     ]
