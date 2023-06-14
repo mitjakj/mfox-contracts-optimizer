@@ -335,6 +335,15 @@ module.exports = {
       strategy: '',
     },
 
+
+    pool666: {
+      // POLYGON
+      chainId: constants.POLYGON.lzChainId,
+      gauge: '',
+      sideGauge: '',
+      strategy: '',
+    },
+
     // poolxxx: {
     //   // ARBITRUM USDC
     //   chainId: constants.ARBITRUM.lzChainId,
