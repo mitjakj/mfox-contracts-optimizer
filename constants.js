@@ -223,9 +223,11 @@ module.exports = {
 
   POLYGON: {
     /* general */
+    wmatic: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
     weth: '',
     usdt: '',
     usdc: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+    crv: '0x172370d5Cd63279eFa6d502DAB29171933a610AF',
 
     /* token */
     token: '0x967F4B82D8B7eD38f655CCf084150180c8165AC5', 
@@ -253,6 +255,13 @@ module.exports = {
     /* LPs */
     magicfoxLP_FOX_MATIC: '0xbC90764eBF7C77984786DB1Eea0ce95ccE5B0978',
     magicfoxLP_SHROOM_MATIC: '0xDC7F0b988DD99a0c7C3B9f88DF8871A368B64d13',
+
+    crvUSD_BTC_ETH: '0xdAD97F7713Ae9437fa9249920eC8507e5FbB23d3',
+    crvUSD_BTC_ETH_POOL: '0x1d8b86e3D88cDb2d34688e87E72F388Cb541B7C8',
+
+    convexFarmAddress: '0xF403C135812408BFbE8713b5A23a04b3D48AAE31',
+
+    uniswapV3Router: '0xe592427a0aece92de3edee1f18e0157c05861564',
 
     /* farms */
   }
