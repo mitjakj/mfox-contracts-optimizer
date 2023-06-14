@@ -287,6 +287,53 @@ module.exports = {
       sideGauge: '0x32D3705950BC4f41B7b4fD878AFE6929738e7B1b',
       strategy: '0x57da5186332f9a26758bd278248cdcAbc7Fc2f72',
     },
+    pool51: {
+      // biswapLP_ETH_BTCB
+      gauge: '0xDB8aA2880888fF0D5AbA2ee29f855c4888346d18',
+      strategy: '0xcc2aBCdfEdc04fAddA5e01340ec9413fea200816',
+    },
+    pool52: {
+      // biswapLP_ETH_USDT
+      gauge: '0xED02754bABdBc659f50f49a4189dDC6Ee3Cc2852',
+      strategy: '0x8c37D32BDf1cdFdF8b2bdf3D3ca03ff729CE3b70',
+    },
+    pool53: {
+      // biswapLP_BTCB_WBNB
+      gauge: '0x2c22080c98A1c655D068EA479E329eD54bdE70F2',
+      strategy: '0xAcd7DEa27fb6373112023E584f52CC58c7A0F43d',
+    },
+    pool54: {
+      // biswapLP_WBNB_BUSD
+      gauge: '0xf605435921Aaa65ADEE9675638f371e7BB1b1dc1',
+      strategy: '0xE0Ac4C6FAb0eA238e46a68b2a844D75054E209aE',
+    },
+    pool55: {
+      // thenaLP_sAMM_DOLA_FRAX
+      gauge: '0x718b3cDB4e61Fa412Aa3De30FD5863DAab6D53F8',
+      strategy: '0x1bf575EbADACc8D13452560421162d6c5adc324D',
+    },
+    pool56: {
+      // thenaGammaLP_aBNBx_WBNB
+      gauge: '0x4e5CCC55539b180A29d87BbC9aFe4Bcc15FF095C',
+      strategy: '0x07ccDf5dE4b6Beed22C89ca781960EAeE038D58D',
+    },
+    pool57: {
+      // thenaGammaLP_aUSDT_WBNB -- FAILED
+      gauge: '0x6252AAfc9B50bcE565C7987A31819C23747dF08C',
+      strategy: '0x7e6412a01994dF4d9A335720c5104b870941FD0b',
+    },
+    pool58: {
+      // thenaGammaLP_aETH_WBNB
+      gauge: '0xC018ae415E3305eA66cE73D9a7162BE4AA76Ac6e',
+      strategy: '0xeb9aA8B5eFAB97066049d43e192a8D150A805ca2',
+    },
+    pool59: {
+      // POLYGON 
+      chainId: constants.POLYGON.lzChainId,
+      gauge: '',
+      sideGauge: '',
+      strategy: '',
+    },
 
     // poolxxx: {
     //   // ARBITRUM USDC
@@ -358,6 +405,24 @@ module.exports = {
       sideGauge: '0x78535e9211B1EF688FD3664b8A9Fb26d5dC7E64D',
       strategy: '0xa8446B759f9B4312dfa924C02c508a3b7330D302',
       allocPts: 80,
+    },
+    pool8: {
+      // biswapLP_USDT_BUSD
+      gauge: '0x5a474486f87ae7fCd0Cce2bb61103a01d1F6B255',
+      strategy: '0x38A1e28bfDb6fa90d3dFfa9d06D1976f48321e47',
+      allocPts: 0,
+    },
+    pool9: {
+      // biswapLP_USDT_BTCB
+      gauge: '0x1d6F6F3f90071C702aE4B56989695c2D657002c2',
+      strategy: '0x7c36D8d374693e811Fa629DcFC65778E1B33ef20',
+      allocPts: 0,
+    },
+    pool10: {
+      // thenaGammaLP_aUSDT_USDC
+      gauge: '0x755095f95700eD9edfe361FE32acf8e35a246DCC',
+      strategy: '0xf34135A04AbE2a666Dd0ca369d93dcCeDCc042cB',
+      allocPts: 0,
     },
   },
 
