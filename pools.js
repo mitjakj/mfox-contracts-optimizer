@@ -352,15 +352,15 @@ module.exports = {
       // ARBITRUM chronosLP_vAMM_WBTC_WETH
       chainId: constants.ARBITRUM.lzChainId,
       gauge: '0x3d203fc21bc0e4295780496b0FA84740E99E46a0',
-      sideGauge: '',
-      strategy: '',
+      sideGauge: '0x8e50173ed5F872D789e21Fa0C67962C46ceBC6B7',
+      strategy: '0x53fF17cE5F64e438Fb6C0EC1F5182FDB5348226F',
     },
     pool63: {
       // ARBITRUM chronosLP_vAMM_ARB_USDC
       chainId: constants.ARBITRUM.lzChainId,
       gauge: '0xD80Aa5dfF44D879547dFcfB0B25Ca194Ff4d26AA',
-      sideGauge: '',
-      strategy: '',
+      sideGauge: '0x792BE6c840A5829e0013F511406Ef4abC45396ce',
+      strategy: '0x0382ecb8D9548578b107601985eadeFC8e21cb42',
     },
 
     // poolxxx: {

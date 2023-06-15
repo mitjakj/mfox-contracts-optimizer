@@ -170,6 +170,7 @@ module.exports = {
     slna: '0x1C28Edf9e0D66F3124f141A3cF3Ef1217F7019c4',
     chr: '0x15b2fb8f08E4Ac1Ce019EADAe02eE92AeDF06851',
     arx: '0xD5954c3084a1cCd70B4dA011E67760B8e78aeE84',
+    wbtc: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
 
     /* token */
     token: '0xEB79217B2802dfD54b6135c19a6AA2164bBD3a51', 
