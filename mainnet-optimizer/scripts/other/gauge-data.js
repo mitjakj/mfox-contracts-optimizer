@@ -4,7 +4,7 @@ async function main() {
     const addresses = hre.network.config.constants;
     const investor = (await hre.ethers.getSigners())[1];
 
-    const STRAT = await hre.ethers.getContractAt('Strategy_Thena', '0x354a9cc17afC459997c1f31d81f7712cC7Db7733', investor);
+    const STRAT = await hre.ethers.getContractAt('Strategy_Thena', '0x9191098185954594e72A60C7342146224Fc92e58', investor);
 
     console.log(await STRAT.balanceOf());
 }
