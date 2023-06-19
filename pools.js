@@ -362,6 +362,16 @@ module.exports = {
       sideGauge: '0x792BE6c840A5829e0013F511406Ef4abC45396ce',
       strategy: '0x0382ecb8D9548578b107601985eadeFC8e21cb42',
     },
+    pool64: {
+      // pcs-cake-syrup-lvl
+      gauge: '0xe5e5f4A78968eC0C4994d5D4000074b93a9Fe15A',
+      strategy: '0x05DD994CBe074647FF591de290bd081631c4885f',
+    },
+    pool65: {
+      // pcsStableLP_HAY_USDT
+      gauge: '0x828aDBeEb1498017D59259ADb1BA1D288584A3d7',
+      strategy: '0xE8975fF156b57b7E24eb803757958C5404ef3AC4',
+    },
 
     // poolxxx: {
     //   // ARBITRUM USDC
